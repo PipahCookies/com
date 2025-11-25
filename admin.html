@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PipahCookies Elegant 3D Gallery (External Cart)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* --- THEME COLORS --- */
+:root {
+  --color-primary: #5a4f3c; /* Deep Brown Text */
+  --color-secondary: #A67734; /* Cookie Orange/Highlight */
+  --color-background: #f7f3ee; /* Soft Beige */
+  --color-card-bg: rgba(255, 255, 255, 0.7); /* Transparent Card */
+}
+
+/* --- GENERAL & LAYOUT --- */
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-background); 
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-primary);
+  width: 100%;
+}
+
+.gallery-wrapper {
+  text-align: center;
+  /* SCALING CHANGE: Allow expansion up to 1200px */
+  max-width: 1200px; 
+  position: relative; 
+  padding: 0 10px;
+  box-sizing: border-box;
+  width: 100%; 
+  min-height: 500px; 
+}
+.gallery-title {
+  /* SCALING CHANGE: Font size scales with viewport width (vw) */
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+.gallery-description {
+  /* SCALING CHANGE: Font size scales with viewport width (vw) */
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  color: #7b7060;
+  margin: 0 0 30px 0;
+  line-height: 1.4;
+}
+
+/* --- GALLERY SECTION --- */
+.gallery-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    width: 100%;
+    position: relative;
+}
+.gallery-container {
+  /* SCALING CHANGE: Perspective increased for deeper 3D effect on large screen */
+  perspective: 2000px;
+  /* SCALING CHANGE: Width and height scale with viewport width (vw) */
+  width: clamp(330px, 60vw, 800px); 
+  height: clamp(220px, 40vw, 550px);
+  position: relative;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+/* --- 3D CARD STYLES --- */
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+  overflow: hidden;
+  transform-origin: center;
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.6s ease, filter 0.6s ease;
+  background: var(--color-card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+}
+.card img, .card video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* SCALING CHANGE: Increased separation and rotation for wider views */
+.card.prev {
+    transform: translateX(-100%) translateZ(-500px) rotateY(35deg) scale(0.9);
+    opacity: 0.6;
+    filter: blur(5px);
+    z-index: 0;
+}
+/* SCALING CHANGE: Increased separation and rotation for wider views */
+.card.next {
+    transform: translateX(100%) translateZ(-500px) rotateY(-35deg) scale(0.9);
+    opacity: 0.6;
+    filter: blur(5px);
+    z-index: 0;
+}
+.card.active {
+    transform: translateX(0) translateZ(0) rotateY(0) scale(1);
+    opacity: 1; 
+    filter: blur(0);
+    z-index: 2; 
+    cursor: grab;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.card.hidden {
+    opacity: 0; 
+    pointer-events: none; 
+    transition: none;
+    transform: scale(0.5) translateZ(-800px); 
+}
+/* --- Greyed out effect for out-of-stock products --- */
+.card.out-of-stock {
+    filter: grayscale(100%) brightness(80%);
+    transition: filter 0.6s ease;
+}
+
+
+/* --- PRODUCT DETAIL CARD --- */
+.product-details {
+  background: var(--color-card-bg);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  margin-top: 30px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  min-height: 80px;
+  width: 100%;
+  box-sizing: border-box;
+  /* SCALING CHANGE: Max width matches the gallery container width */
+  max-width: clamp(330px, 60vw, 800px); 
+  margin-left: auto;
+  margin-right: auto;
+}
+.product-info {
+    flex-grow: 1;
+}
+.product-name {
+  /* SCALING CHANGE: Font size scales */
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.product-price {
+  /* SCALING CHANGE: Font size scales */
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin-top: 2px;
+}
+/* --- Stock Status Styling --- */
+.stock-status {
+    /* SCALING CHANGE: Font size scales */
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    font-weight: 600;
+    margin-top: 2px;
+}
+.stock-available {
+    color: red;
+}
+.stock-unavailable {
+    color: grey;
+}
+/* -------------------------------- */
+.add-to-cart-btn {
+  background-color: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 25px;
+  /* SCALING CHANGE: Font size scales */
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+}
+.add-to-cart-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.add-to-cart-btn:hover:enabled {
+    background-color: #8c602b;
+}
+.pulse-confirm {
+  animation: pulse .3s;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* --- VIEWER (Zoom) --- */
+.viewer {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(10, 10, 10, 0.9); z-index: 9999; opacity: 0; visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease; pointer-events: none;
+}
+.viewer.show { opacity: 1; visibility: visible; pointer-events: auto; }
+.viewer-content {
+  position: relative; max-width: 95%; max-height: 90%; z-index: 10000;
+  transform: scale(.9); transition: transform .35s ease;
+}
+.viewer.show .viewer-content { transform: scale(1); }
+.viewer img, .viewer video {
+  width: auto; height: auto; max-width: 95vw; max-height: 85vh;
+  border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  background: #000; object-fit: contain; display: block;
+}
+.close-btn {
+  position: absolute; top: 10px; right: 10px; z-index: 10010;
+  background: rgba(255,255,255,0.8); border: none; border-radius: 50%;
+  width: 36px; height: 36px; font-size: 22px; font-weight: bold; color: var(--color-primary);
+  cursor: pointer; 
+}
+</style>
+</head>
+<body>
+
+<div class="gallery-wrapper" id="galleryWrapper">
+  <div class="gallery-title">Jualan Harian</div>
+  <div class="gallery-description">*LIMITED stok! untuk checkout pilih saje pickup atau COD(lala/grab), tq, Jemput santai cuci mata 😉</div>
+
+  <div class="gallery-section">
+    <div class="gallery-container" id="gallery">
+      </div>
+  </div>
+
+  <div class="product-details">
+    <div class="product-info">
+      <div class="product-name" id="product-name">Product Name</div>
+      <div class="product-price" id="product-price">RM 0.00</div>
+      <div class="stock-status" id="stock-status"></div>
+    </div>
+    <button class="add-to-cart-btn" id="add-to-cart-btn">Add to Cart</button>
+  </div>
+</div>
+
+<div id="mediaViewer" class="viewer" aria-hidden="true">
+  <div class="viewer-content">
+    <img id="viewerImage" src="" alt="" />
+    <video id="viewerVideo" controls playsinline webkit-playsinline></video>
+    <button id="viewerClose" class="close-btn" aria-label="Close viewer">&times;</button>
+  </div>
+</div>
+
+<script src="products.js"></script> 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // --- DOM ELEMENTS ---
+  const gallery = document.getElementById('gallery');
+  let cards; // Will be populated by initializeGallery
+  const productNameEl = document.getElementById('product-name');
+  const productPriceEl = document.getElementById('product-price');
+  const stockStatusEl = document.getElementById('stock-status'); 
+  const addToCartBtn = document.getElementById('add-to-cart-btn');
+  const viewer = document.getElementById('mediaViewer');
+  const viewerContent = viewer.querySelector('.viewer-content');
+  const viewerImg = document.getElementById('viewerImage');
+  const viewerVid = document.getElementById('viewerVideo');
+  const viewerClose = document.getElementById('viewerClose');
+  const galleryWrapper = document.getElementById('galleryWrapper');
+
+  // --- VARIABLES & CONSTANTS ---
+  let activeIndex = 0;
+
+  // FUNCTION: Create a Card Element from product data
+  function createCard(product, index) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-index', index);
+      
+      let mediaElement;
+      // Use the isVideo and mediaUrl properties from products.js
+      if (product.isVideo) {
+          mediaElement = document.createElement('video');
+          mediaElement.src = product.mediaUrl;
+          mediaElement.alt = index + 1;
+          mediaElement.controls = false; 
+          mediaElement.loop = true;
+          mediaElement.muted = true;
+          mediaElement.playsInline = true;
+          mediaElement.webkitPlaysInline = true;
+      } else {
+          mediaElement = document.createElement('img');
+          mediaElement.src = product.mediaUrl;
+          mediaElement.alt = index + 1;
+      }
+      
+      card.appendChild(mediaElement);
+      return card;
+  }
+  
+  // FUNCTION: Initialize Gallery Cards from products.js
+  function initializeGallery() {
+      // 'products' is the global variable loaded from products.js
+      // NOTE: 'products' array must be defined in the external products.js file
+      if (typeof products === 'undefined' || products.length === 0) {
+        console.error("products.js is missing or empty. Cannot initialize gallery.");
+        return;
+      }
+      
+      products.forEach((product, index) => {
+          const card = createCard(product, index);
+          gallery.appendChild(card);
+      });
+      // CRUCIAL: Select the newly generated cards into the 'cards' array
+      cards = Array.from(gallery.querySelectorAll('.card')); 
+  }
+  
+  // --- CART HOOK ---
+  addToCartBtn.addEventListener('click', () => {
+    const product = products[activeIndex];
+    
+    if (product.stock <= 0) {
+        alert('Maaf, produk ini telah habis stok.');
+        return; 
+    }
+    
+    // Sends the base price from products.js (0% discount)
+    window.parent.postMessage({ 
+        eventType: 'gallery:addToCart',
+        detail: { 
+            productId: product.id, 
+            productName: 'Gallery: ' + product.name, 
+            productPrice: product.price, 
+            quantity: 1
+        } 
+    }, '*');
+    
+    addToCartBtn.classList.add('pulse-confirm');
+    setTimeout(() => addToCartBtn.classList.remove('pulse-confirm'), 300);
+  });
+  
+ // --- GALLERY SLIDER FUNCTIONS ---
+  function setActive(index) {
+    if (!cards || cards.length === 0) return;
+    
+    activeIndex = (index + cards.length) % cards.length; 
+    
+    cards.forEach((c, i) => {
+      let state = 'hidden';
+      if (i === activeIndex) state = 'active';
+      else if (i === (activeIndex + 1) % cards.length) state = 'next';
+      else if (i === (activeIndex - 1 + cards.length) % cards.length) state = 'prev';
+      
+      const productStock = products[i] ? products[i].stock : 1;
+      const stockClass = (productStock <= 0) ? ' out-of-stock' : '';
+      
+      c.className = `card ${state}${stockClass}`;
+      
+      const video = c.querySelector('video');
+      if (video) {
+        if (i === activeIndex) {
+            video.play().catch(()=>{});
+        } else {
+            video.pause();
+        }
+      }
+    });
+    
+    const currentProduct = products[activeIndex];
+    
+    productNameEl.textContent = currentProduct.name;
+    // Price display uses the original price (0% discount)
+    productPriceEl.textContent = `RM ${currentProduct.price.toFixed(2)}`; 
+    
+    // --- Stock Check Logic ---
+    const stock = currentProduct.stock;
+    
+    if (stock > 0) {
+        addToCartBtn.disabled = false;
+        addToCartBtn.textContent = 'Add to Cart';
+        stockStatusEl.className = 'stock-status stock-available';
+        stockStatusEl.textContent = `${stock} available`;
+    } else {
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = 'Sold Out';
+        stockStatusEl.className = 'stock-status stock-unavailable';
+        stockStatusEl.textContent = 'Out of Stock';
+    }
+    
+    if(viewer.classList.contains('show')) showViewer(activeIndex);
+  }
+
+  // --- Drag/Swipe Control ---
+  function dragControl(container, onSwipe){
+    let dragging = false, startX = 0, diff = 0;
+    
+    const startDrag = (clientX) => { dragging = true; startX = clientX; container.style.cursor = 'grabbing'; };
+    const moveDrag = (clientX) => { if(dragging) diff = clientX - startX; };
+    const endDrag = () => { 
+        if(dragging){ 
+            if(Math.abs(diff) > 30) onSwipe(diff < 0 ? 1 : -1);
+            dragging = false; diff = 0; 
+        }
+        container.style.cursor = 'grab';
+    };
+
+    container.addEventListener('touchstart', e => startDrag(e.touches[0].clientX), {passive: true});
+    container.addEventListener('touchmove', e => moveDrag(e.touches[0].clientX), {passive: true});
+    container.addEventListener('touchend', endDrag);
+
+    container.addEventListener('mousedown', e => { startDrag(e.clientX); e.preventDefault(); });
+    container.addEventListener('mousemove', e => moveDrag(e.clientX));
+    container.addEventListener('mouseup', endDrag);
+    container.addEventListener('mouseleave', () => { dragging = false; diff = 0; container.style.cursor = 'grab'; });
+  }
+
+  dragControl(gallery, d => setActive(activeIndex + d));
+  dragControl(viewerContent, d => setActive(activeIndex + d));
+
+  // --- VIEWER (Zoom) FUNCTIONS ---
+  function showViewer(index){
+    const media = cards[index].querySelector('img, video');
+    if(!media) return;
+
+    viewerImg.style.display = 'none';
+    viewerVid.style.display = 'none';
+    viewerVid.pause();
+    
+    if(media.tagName === 'IMG') {
+      viewerImg.src = media.src;
+      viewerImg.alt = media.alt;
+      viewerImg.style.display = 'block';
+    }
+    if(media.tagName === 'VIDEO'){
+      const videoSrc = media.src; 
+      viewerVid.src = videoSrc;
+      viewerVid.style.display = 'block';
+      viewerVid.load();
+      viewerVid.play().catch(e => console.log('Video play failed:', e));
+    }
+  }
+
+  function openViewer(index){
+    viewer.classList.add('show');
+    setActive(index);
+  }
+
+  function closeViewer(){
+    viewer.classList.remove('show');
+    viewerVid.pause();
+    viewerVid.removeAttribute('src'); 
+    viewerVid.load();
+  }
+
+  gallery.addEventListener('click', (e) => {
+    const activeCard = e.target.closest('.card.active');
+    if (activeCard) openViewer(activeIndex);
+  });
+  
+  viewerClose.addEventListener('click', closeViewer);
+  viewer.addEventListener('click', e => { 
+    if(e.target === viewer || e.target === viewerClose) closeViewer(); 
+  });
+  
+  // --- Auto-resize Iframe (for parent page scroll) ---
+  function resizeIframe() {
+    const height = galleryWrapper.offsetHeight; 
+    // This postMessage assumes the gallery is embedded in an iframe on a parent page.
+    window.parent.postMessage({ galleryHeight: height }, '*');
+  }
+
+  // --- Initialization ---
+  initializeGallery();
+  if (cards && cards.length > 0) {
+    setActive(0);
+  } else {
+    // Fallback if no products are loaded
+    productNameEl.textContent = 'No Products Loaded';
+    productPriceEl.textContent = 'RM 0.00';
+    stockStatusEl.textContent = 'Please check products.js';
+    addToCartBtn.disabled = true;
+    addToCartBtn.textContent = 'Unavailable';
+  }
+  
+  resizeIframe();
+  window.addEventListener('resize', resizeIframe);
+  
+});
+</script>
+</body>
+</html>

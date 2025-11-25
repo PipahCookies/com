@@ -1,0 +1,23 @@
+{
+  "name": "PipahCookies",
+  "short_name": "PipahCookies",
+  "description": "Homemade Fresh & Tasty Cookies 🍪",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff8f0",
+  "theme_color": "#d2b48c",
+  "icons": [
+    {
+      "src": "Images/icon1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Images/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

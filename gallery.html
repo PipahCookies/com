@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery Grid</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .gallery-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+  }
+
+  /* Kontena imej (untuk memastikan saiz grid tidak pecah) */
+  .image-wrapper {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .image-wrapper.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  /* Overlay for zoom */
+  .overlay {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    animation: zoomIn 0.3s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes zoomIn {
+    from { transform: scale(0.7); }
+    to { transform: scale(1); }
+  }
+
+  /* Text buttons */
+  .gallery-btn {
+    display: inline-block;
+    margin: 10px auto 30px auto;
+    font-size: 18px;
+    font-weight: 600;
+    color: #A67734;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    text-align: center;
+    transition: color 0.3s ease, letter-spacing 0.3s ease;
+  }
+
+  .gallery-btn:hover {
+    color: #ff5722;
+    letter-spacing: 1px;
+  }
+
+  .btn-container {
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="gallery-container" id="gallery"></div>
+
+<div class="btn-container">
+  <button class="gallery-btn" id="seeMoreBtn" style="display:none;">See More</button>
+  <button class="gallery-btn" id="seeLessBtn" style="display:none;">See Less</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <img src="" id="overlay-img" alt="Zoomed Image">
+</div>
+
+<script>
+  const allImages = [
+    'Images/pic33.jpg',
+    'Images/pic34.jpg',
+    'Images/pic36.jpg',
+    'Images/jc1.jpg',
+    'Images/jc2.jpg',
+    'Images/oc1.jpg',
+    'Images/oc.jpg',
+    'Images/cm1.jpg',
+    'Images/pic31.jpg',
+    'Images/pic10.jpg',
+    'Images/pic29.jpg',
+    'Images/pic28.jpg',
+    'Images/pic27.jpg',
+    'Images/pic26.jpg',
+    'Images/pic25.jpg',
+    'Images/pic21.jpg',
+    'Images/pic11.jpg',
+    'Images/pic13.jpg',
+    'Images/ss1.jpg',
+    'Images/ss2.jpg',
+    'Images/ss3.jpg',
+    'Images/ch1.jpg',
+    'Images/ch2.jpg',
+    'Images/ch3.jpg',
+    'Images/bc1.jpg',
+    'Images/bc2.jpg',
+    'Images/bc3.jpg',
+    'Images/dc1.jpg',
+    'Images/dc2.jpg',
+    'Images/dc3.jpg',
+    'Images/rv1.jpg',
+    'Images/rv2.jpg',
+    'Images/rv3.jpg'
+  ];
+
+  const gallery = document.getElementById('gallery');
+  const seeMoreBtn = document.getElementById('seeMoreBtn');
+  const seeLessBtn = document.getElementById('seeLessBtn');
+  const overlay = document.getElementById('overlay');
+  const overlayImg = document.getElementById('overlay-img');
+
+  const imagesPerLayer = 4;
+  const initialLayers = 5; 
+  const initialCount = initialLayers * imagesPerLayer; // 5 rows x 4 = 20 images
+  let isExpanded = false;
+
+  function renderGallery(count) {
+    gallery.innerHTML = '';
+    
+    // Pastikan kita tidak cuba render lebih daripada jumlah imej yang ada
+    const actualCount = Math.min(count, allImages.length);
+
+    for (let i = 0; i < actualCount; i++) {
+      // Guna wrapper untuk memudahkan transisi dan grid
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('image-wrapper');
+
+      const img = document.createElement('img');
+      img.src = allImages[i];
+      img.alt = 'Gallery Image';
+      
+      wrapper.appendChild(img);
+      gallery.appendChild(wrapper);
+
+      setTimeout(() => wrapper.classList.add('show'), i * 50); // stagger fade-in
+    }
+    
+    // Kemaskini butang selepas render
+    updateButtons(); 
+    
+    // Beritahu parent iframe untuk melaraskan ketinggian
+    adjustHeight();
+  }
+  
+  function updateButtons() {
+    // Tunjukkan "See More" jika jumlah imej lebih besar daripada yang dipaparkan
+    if (allImages.length > initialCount && !isExpanded) {
+      seeMoreBtn.style.display = 'inline-block';
+      seeLessBtn.style.display = 'none';
+    } else if (isExpanded) {
+      // Tunjukkan "See Less" jika galeri telah diperluaskan
+      seeMoreBtn.style.display = 'none';
+      seeLessBtn.style.display = 'inline-block';
+    } else {
+      // Sembunyikan kedua-duanya jika semua imej dimuatkan pada mulanya (kurang daripada initialCount)
+      seeMoreBtn.style.display = 'none';
+      seeLessBtn.style.display = 'none';
+    }
+  }
+
+
+  function adjustHeight() {
+    // Fungsi ini membantu parent (index.html) melaraskan ketinggian iframe
+    if (window.parent) {
+      setTimeout(() => {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ galleryHeight: height }, '*');
+      }, 300);
+    }
+  }
+
+  // Pemuatan Awal
+  // Guna window.onload untuk memastikan DOM siap sedia sepenuhnya sebelum render
+  window.onload = () => {
+      renderGallery(initialCount);
+  }
+
+
+  // Event Listeners
+  seeMoreBtn.addEventListener('click', () => {
+    isExpanded = true;
+    renderGallery(allImages.length);
+  });
+
+  seeLessBtn.addEventListener('click', () => {
+    isExpanded = false;
+    renderGallery(initialCount);
+  });
+
+  // Image zoom
+  gallery.addEventListener('click', e => {
+    // Sasarkan 'IMG' di dalam 'image-wrapper'
+    if(e.target.tagName === 'IMG') {
+      overlayImg.src = e.target.src;
+      overlay.style.display = 'flex';
+    }
+  });
+
+  overlay.addEventListener('click', () => {
+    overlay.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>

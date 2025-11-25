@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>3D Card Gallery Sync + Zoom & Video View</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f7f3ee;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Wrapper */
+.gallery-wrapper {
+  text-align: center;
+  max-width: 360px;
+  position: relative;
+}
+
+/* Title & Description */
+.gallery-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #5a4f3c;
+  margin-bottom: 12px;
+}
+
+.gallery-description {
+  font-size: 0.95rem;
+  color: #7b7060;
+  margin-top: 12px;
+  line-height: 1.4;
+}
+
+/* Main Gallery */
+.gallery-container {
+  perspective: 1200px;
+  width: 350px;
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+  margin: 0 auto;
+}
+
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+  overflow: hidden;
+  transform-origin: center;
+  transition: transform .6s ease, opacity .6s ease;
+  background: rgba(255, 255, 255, .3);
+  backdrop-filter: blur(6px);
+}
+.card img, .card video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hidden {opacity: 0; pointer-events: none;}
+.card.next {transform: translateX(100%) rotateY(45deg); opacity: 0;}
+.card.prev {transform: translateX(-100%) rotateY(-45deg); opacity: 0;}
+.card.active {transform: translateX(0) rotateY(0); opacity: 1; z-index: 2; cursor: pointer;}
+
+/* Thumbnails */
+.thumb-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0 0px 0;
+  gap: 10px;
+}
+.thumb-viewport {width: 350px; overflow: hidden;}
+.thumb-track {
+  display: flex;
+  align-items: center;
+  will-change: transform;
+  cursor: pointer;
+}
+.thumb {
+  width: 60px;
+  height: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  opacity: .5;
+  transition: transform .3s ease, opacity .3s ease, box-shadow .3s ease;
+  margin: 0 6px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, .25);
+  backdrop-filter: blur(4px);
+  transform: perspective(300px) rotateY(6deg);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, .6), 0 3px 10px rgba(0, 0, 0, .15);
+}
+.thumb img, .thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.thumb.active {
+  opacity: 1;
+  transform: scale(1.25) perspective(300px) rotateY(0deg);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .25), 0 0 20px rgba(255, 245, 200, .6);
+  z-index: 3;
+}
+
+.no-select {user-select: none; -webkit-user-select: none; -ms-user-select: none;}
+
+/* ===== Fullscreen Viewer ===== */
+.viewer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.85);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  pointer-events: none;
+}
+.viewer.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.viewer-content {
+  position: relative;
+  max-width: 92%;
+  max-height: 86%;
+  z-index: 10000;
+  transform: scale(.9);
+  transition: transform .35s ease;
+}
+.viewer.show .viewer-content { transform: scale(1); }
+
+.viewer img,
+.viewer video {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  background: #000;
+  object-fit: contain;
+  display: block;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10010;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.close-btn:hover { background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="gallery-wrapper">
+  <div class="gallery-title">Our Gallery</div>
+
+  <div class="gallery-container" id="gallery">
+    <div class="card active"><video src="Images/kpvid.mp4" autoplay muted loop></video></div>
+    <div class="card active"><video src="Images/donut.mp4" autoplay muted loop></video></div>
+   <div class="card active"><video src="Images/meringue.mp4" autoplay muted loop></video></div>
+    <div class="card next"><img src="Images/ss3.jpg" alt="1"/></div>
+    <div class="card hidden"><img src="Images/pic30.jpg" alt="2"/></div>
+    <div class="card hidden"><img src="Images/ch2.jpg" alt="3"/></div>
+    <div class="card hidden"><img src="Images/kp2.jpg" alt="4"/></div>
+    <div class="card hidden"><img src="Images/rv2.jpg" alt="5"/></div>
+    <div class="card hidden"><img src="Images/pic31.jpg" alt="6"/></div>
+    <div class="card hidden"><img src="Images/pic10.jpg" alt="7"/></div>
+    <div class="card hidden"><img src="Images/pic29.jpg" alt="8"/></div>
+    <div class="card hidden"><img src="Images/pic28.jpg" alt="9"/></div>
+    <div class="card hidden"><img src="Images/pic27.jpg" alt="10"/></div>
+  </div>
+
+  <div class="thumb-row">
+    <div class="thumb-viewport" id="thumbViewport">
+      <div class="thumb-track no-select" id="thumbTrack">
+        <div class="thumb"><video src="Images/kpvid.mp4" autoplay muted loop></video></div>
+        <div class="thumb"><video src="Images/donut.mp4" autoplay muted loop></video></div>
+   <div class="thumb"><video src="Images/meringue.mp4" autoplay muted loop></video></div>
+        <div class="thumb"><img src="Images/ss3.jpg" alt="1"/></div>
+        <div class="thumb"><img src="Images/pic30.jpg" alt="2"/></div>
+        <div class="thumb"><img src="Images/ch2.jpg" alt="3"/></div>
+        <div class="thumb"><img src="Images/kp2.jpg" alt="4"/></div>
+        <div class="thumb"><img src="Images/rv2.jpg" alt="5"/></div>
+        <div class="thumb"><img src="Images/pic31.jpg" alt="6"/></div>
+        <div class="thumb"><img src="Images/pic10.jpg" alt="7"/></div>
+        <div class="thumb"><img src="Images/pic29.jpg" alt="8"/></div>
+        <div class="thumb"><img src="Images/pic28.jpg" alt="9"/></div>
+        <div class="thumb"><img src="images/pic27.jpg" alt="10"/></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-description">
+    Jemput cuci mata,inilah produk² Homemade kami, hubungi kami untuk tempahan  </div>
+</div>
+
+<!-- Fullscreen Viewer -->
+<div id="mediaViewer" class="viewer" aria-hidden="true">
+  <div class="viewer-content">
+    <img id="viewerImage" src="" alt="" />
+    <video id="viewerVideo" controls playsinline webkit-playsinline></video>
+    <button id="viewerClose" class="close-btn" aria-label="Close viewer">&times;</button>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const gallery = document.getElementById('gallery');
+  const cards = Array.from(gallery.querySelectorAll('.card'));
+  const thumbViewport = document.getElementById('thumbViewport');
+  const thumbTrack = document.getElementById('thumbTrack');
+  const thumbs = Array.from(thumbTrack.querySelectorAll('.thumb'));
+  const viewer = document.getElementById('mediaViewer');
+  const viewerContent = viewer.querySelector('.viewer-content');
+  const viewerImg = document.getElementById('viewerImage');
+  const viewerVid = document.getElementById('viewerVideo');
+  const viewerClose = document.getElementById('viewerClose');
+
+  let activeIndex = 0;
+  let isDragging = false;
+  let startX = 0;
+
+  // --- Set Active Card & Thumbnail ---
+  function setActive(index) {
+    activeIndex = (index + cards.length) % cards.length;
+    cards.forEach((c, i) => {
+      c.classList.toggle('active', i === activeIndex);
+      c.classList.toggle('prev', i === activeIndex - 1);
+      c.classList.toggle('next', i === activeIndex + 1);
+      c.classList.toggle('hidden', i !== activeIndex && i !== activeIndex -1 && i !== activeIndex +1);
+    });
+    thumbs.forEach((t, i) => t.classList.toggle('active', i === activeIndex));
+    centerThumb();
+    if(viewer.classList.contains('show')) showViewer(activeIndex);
+  }
+
+  // --- Center active thumbnail ---
+  function centerThumb() {
+    const thumb = thumbs[activeIndex];
+    if (!thumb) return;
+    const offset = thumb.offsetLeft + thumb.offsetWidth / 2 - thumbViewport.offsetWidth / 2;
+    thumbViewport.scrollTo({ left: offset, behavior: 'smooth' });
+  }
+
+  // --- Swipe / Drag Control ---
+  function dragControl(container, onSwipe){
+    let dragging = false, startX = 0, diff = 0;
+    container.addEventListener('touchstart', e => { dragging=true; startX = e.touches[0].clientX; });
+    container.addEventListener('touchmove', e => { if(dragging) diff = e.touches[0].clientX - startX; });
+    container.addEventListener('touchend', e => { if(dragging){ if(Math.abs(diff)>30) onSwipe(diff<0?1:-1); dragging=false; diff=0; }});
+
+    // mouse drag
+    container.addEventListener('mousedown', e => { dragging=true; startX=e.clientX; e.preventDefault(); });
+    container.addEventListener('mousemove', e => { if(dragging) diff=e.clientX-startX; });
+    container.addEventListener('mouseup', e => { if(dragging){ if(Math.abs(diff)>30) onSwipe(diff<0?1:-1); dragging=false; diff=0; }});
+    container.addEventListener('mouseleave', e => { dragging=false; diff=0; });
+  }
+
+  // --- Apply swipe/drag to gallery, thumbnails, viewer ---
+  dragControl(gallery, d=>setActive(activeIndex+d));
+  dragControl(thumbViewport, d=>setActive(activeIndex+d));
+  dragControl(viewerContent, d=>setActive(activeIndex+d));
+
+  // --- Click on thumbnails ---
+  thumbs.forEach((t,i) => t.addEventListener('click', ()=>setActive(i)));
+
+  // --- Open viewer ---
+  cards.forEach((c,i)=>c.addEventListener('click', ()=>openViewer(i)));
+
+  function showViewer(index){
+    const media = cards[index].querySelector('img, video');
+    if(!media) return;
+    viewerImg.style.display = media.tagName==='IMG'?'block':'none';
+    viewerVid.style.display = media.tagName==='VIDEO'?'block':'none';
+    if(media.tagName==='IMG') viewerImg.src = media.src;
+    if(media.tagName==='VIDEO'){
+      viewerVid.src = media.currentSrc||media.src;
+      viewerVid.load();
+      viewerVid.play().catch(()=>{});
+    }
+  }
+
+  function openViewer(index){
+    viewer.classList.add('show');
+    document.body.style.overflow='hidden';
+    setActive(index);
+  }
+
+  function closeViewer(){
+    viewer.classList.remove('show');
+    viewerVid.pause();
+    viewerVid.removeAttribute('src');
+    viewerVid.load();
+    document.body.style.overflow='';
+  }
+
+  viewerClose.addEventListener('click', closeViewer);
+  viewer.addEventListener('click', e=>{ if(e.target===viewer) closeViewer(); });
+
+  // --- Keyboard Navigation ---
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight') setActive(activeIndex+1);
+    if(e.key==='ArrowLeft') setActive(activeIndex-1);
+    if(e.key==='Escape') closeViewer();
+  });
+
+  // --- Initialize ---
+  setActive(0);
+});
+</script>
+  
+
+</body>
+</html>

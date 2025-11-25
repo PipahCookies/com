@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PipahCookies - Invois Pesanan</title>
+<style>
+  body { font-family: 'Poppins', sans-serif; background: #fff8f5; color: #333; padding: 20px; margin:0; }
+  .invoice-container { max-width:720px; margin:auto; background:#fff; border-radius:14px; padding:22px; box-shadow:0 6px 20px rgba(0,0,0,0.06) }
+  .header{display:flex;gap:16px;align-items:center}
+  .header img{width:84px;border-radius:10px}
+  h2{margin:0;color:#503CEB}
+  table{width:100%;border-collapse:collapse;margin-top:14px}
+  th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+  th{background:#fafafa}
+  .right{text-align:right}
+  .summary{margin-top:12px;font-size:15px}
+  .buttons{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+  button{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-size:15px}
+  .btn-download{background:#503CEB;color:#fff}
+  .btn-back{background:#d0d0d0}
+  .btn-whatsapp{background:#25D366;color:#fff}
+  .muted{color:#666;font-size:13px;margin-top:8px}
+  @media print{ .buttons{display:none} .invoice-container{box-shadow:none;border:none;padding:0} }
+
+  /* Floating download prompt (fade animation) */
+  #downloadPrompt {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(255,255,255,0.96);
+    border: 2px solid #503CEB;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    z-index: 9999;
+    display: none;
+    max-width: 280px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .32s ease, transform .32s ease;
+  }
+  #downloadPrompt.show { display: block; opacity: 1; transform: translateY(0); }
+  #downloadPrompt .prompt-title { margin:0 0 10px; font-weight:700; }
+  #downloadPrompt .prompt-actions { display:flex; gap:8px; justify-content:center; }
+  #downloadPrompt button { padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700; border:none; }
+  #downloadPrompt .yes { background:#503CEB; color:#fff; }
+  #downloadPrompt .no { background:#ddd; color:#333; }
+</style>
+</head>
+<body>
+  <div class="invoice-container" id="invoiceContainer">
+    <div class="header">
+      <img src="Images/LOgo.png" alt="Logo" id="logoImg" onerror="this.style.display='none'">
+      <div>
+        <h2>PipahCookies</h2>
+        <div class="muted">Invois Pesanan</div>
+      </div>
+    </div>
+
+    <div id="invoiceDetails" style="margin-top:12px"></div>
+
+    <div class="buttons">
+      <button class="btn-back" onclick="goBack()">⬅️ Kembali ke Kedai</button>
+      <button class="btn-download" onclick="downloadPDF()">💾 Muat Turun PDF</button>
+      <button class="btn-whatsapp" onclick="sendToWhatsApp()">📩 Hantar ke WhatsApp</button>
+    </div>
+
+    <div class="muted">Nota: Sila semak nombor telefon & alamat sebelum hantar pesanan.</div>
+  </div>
+
+<!-- Floating download prompt -->
+<div id="downloadPrompt" role="dialog" aria-modal="true" aria-label="Muat turun invois">
+  <p class="prompt-title">💾 Muat turun invois ini?</p>
+  <div class="prompt-actions">
+    <button class="yes" id="promptYes">Ya</button>
+    <button class="no" id="promptNo">Tidak</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  const STORAGE_KEY = 'pipah_cart_v1';
+  const ORDER_KEY = 'pipah_order_info';
+  const WHATSAPP_NUMBER = '601121243407';
+
+  function formatMY(dateStr){
+    const d = new Date(dateStr);
+    // fallback if invalid
+    if (isNaN(d)) return new Date().toLocaleString('ms-MY', { hour12: false });
+    return d.toLocaleString('ms-MY', { hour12: false });
+  }
+
+  // Render invoice; compute totals and persist computed values to ORDER_KEY
+  function renderInvoice(){
+    const cart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const infoRaw = JSON.parse(localStorage.getItem(ORDER_KEY) || '{}');
+    const info = Object.assign({}, infoRaw); // copy so we can fill defaults
+
+    if (!cart.length || !info.orderId){
+      document.getElementById('invoiceDetails').innerHTML = '<p>Tiada pesanan dijumpai. Sila buat pesanan dari kedai.</p>';
+      return;
+    }
+
+    // compute subtotal safely
+    const subtotal = cart.reduce((s,p)=>{
+      const price = Number(p.price || 0);
+      const qty = Number(p.qty || 0);
+      return s + (price * qty);
+    }, 0);
+
+    // discount (percentage)
+    const discount = Number(info.discount || 0);
+    const discounted = subtotal * (1 - discount/100);
+
+    // postage: allow info.postage, or fallback to 0
+    const postage = Number(info.postage || 0);
+
+    // final total
+    const total = Number((discounted + postage).toFixed(2));
+
+    // save computed numbers back to order info so PDF / WhatsApp use same values
+    info.subtotal = Number(subtotal.toFixed(2));
+    info.computedDiscounted = Number(discounted.toFixed(2));
+    info.postage = Number(postage.toFixed(2));
+    info.total = total;
+    // ensure date exists
+    if (!info.date) info.date = new Date().toISOString();
+
+    localStorage.setItem(ORDER_KEY, JSON.stringify(info));
+
+    const dateDisplay = formatMY(info.date);
+    let html = `
+      <p><strong>ID Pesanan:</strong> ${esc(info.orderId)}<br>
+      <strong>Tarikh:</strong> ${esc(dateDisplay)}<br>
+      <strong>Pembeli:</strong> ${esc(info.buyerName)}<br>
+      <strong>No Telefon:</strong> ${esc(info.buyerPhone)}<br>
+      <strong>Alamat:</strong> ${esc(info.buyerAddress)}</p>
+
+      <table>
+        <thead><tr><th>Produk</th><th>Kuantiti</th><th class="right">Harga (RM)</th></tr></thead>
+        <tbody>
+    `;
+    cart.forEach(p => {
+      const lineTotal = (Number(p.price || 0) * Number(p.qty || 0));
+      html += `<tr><td>${esc(p.title)}</td><td>${Number(p.qty || 0)}</td><td class="right">RM ${lineTotal.toFixed(2)}</td></tr>`;
+    });
+
+    html += `</tbody></table>`;
+
+    html += `<div class="summary">
+      <div>Subtotal: RM ${info.subtotal.toFixed(2)}</div>
+      <div>Diskaun: ${discount}%</div>
+      <div>Jumlah Selepas Diskaun: RM ${info.computedDiscounted.toFixed(2)}</div>
+      <div>Postage: RM ${info.postage.toFixed(2)}</div>
+      <div style="font-weight:700;margin-top:8px">Jumlah Akhir: RM ${info.total.toFixed(2)}</div>
+    </div>`;
+
+    document.getElementById('invoiceDetails').innerHTML = html;
+  }
+
+  function esc(s){ return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  function goBack(){
+    window.location.href = 'index.html';
+  }
+  
+
+  // === WhatsApp Sender (Smart Version with Safe Increment) ===
+function sendToWhatsApp() {
+  const cart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  const info = JSON.parse(localStorage.getItem(ORDER_KEY) || '{}');
+  if (!cart.length || !info.orderId) { 
+    alert('Tiada pesanan untuk dihantar.'); 
+    return; 
+  }
+
+  // === Recompute Totals (Safety) ===
+  const subtotal = cart.reduce((s, p) => s + (Number(p.price || 0) * Number(p.qty || 0)), 0);
+  const discount = Number(info.discount || 0);
+  const discounted = subtotal * (1 - discount / 100);
+  const postage = Number(info.postage || 0);
+  const finalTotal = Number((discounted + postage).toFixed(2));
+
+  // === Build WhatsApp Message ===
+  let msg = `🧾 *PipahCookies - Pesanan Baru*\n`;
+  msg += `No Pesanan: ${info.orderId}\nTarikh: ${formatMY(info.date)}\n`;
+  msg += `Nama: ${info.buyerName}\nTelefon: ${info.buyerPhone}\nAlamat: ${info.buyerAddress}\n\n`;
+  msg += `Pesanan:\n`;
+  cart.forEach(p => {
+    const lineTotal = (Number(p.price || 0) * Number(p.qty || 0)).toFixed(2);
+    msg += `${p.qty} x ${p.title} - RM ${lineTotal}\n`;
+  });
+  msg += `\nSubtotal: RM ${subtotal.toFixed(2)}\n`;
+  msg += `Diskaun: ${discount}%\n`;
+  msg += `Postage: RM ${postage.toFixed(2)}\n`;
+  msg += `Jumlah: RM ${finalTotal.toFixed(2)}\n\nTerima kasih!`;
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+  // === Smart Counter Increment Control ===
+  let whatsappOpened = false;
+  const openTime = Date.now();
+
+  try {
+    const newTab = window.open(url, '_blank');
+    if (newTab) whatsappOpened = true;
+  } catch (err) {
+    console.warn("⚠️ Gagal membuka WhatsApp:", err);
+  }
+
+  // === Check if WhatsApp really opened ===
+  setTimeout(() => {
+    const elapsed = Date.now() - openTime;
+
+    if (whatsappOpened && elapsed > 800) {
+      // WhatsApp tab opened successfully → increment counter
+      incrementOrderCounter();
+      console.log("✅ WhatsApp dibuka — order counter meningkat.");
+      alert("✅ Pesanan berjaya dihantar ke WhatsApp!\nOrder ID telah disimpan.");
+    } else {
+      console.log("⚠️ WhatsApp tidak dibuka — counter tidak meningkat.");
+      alert("⚠️ Nampaknya WhatsApp tidak dibuka. Sila semak sambungan atau benarkan popup.");
+    }
+  }, 1200);
+}
+
+// === Helper to Increment Order Counter ===
+function incrementOrderCounter() {
+  let last = parseInt(localStorage.getItem("orderCounter") || "0", 10);
+  localStorage.setItem("orderCounter", (last + 1).toString());
+}
+
+  // PDF generation: recompute totals to ensure consistency and use saved info as fallback
+  async function downloadPDF(){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt' , format: 'a4'});
+    const info = JSON.parse(localStorage.getItem(ORDER_KEY) || '{}');
+    const cart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+    // recompute
+    const subtotal = cart.reduce((s,p)=> s + (Number(p.price||0) * Number(p.qty||0)), 0);
+    const discount = Number(info.discount || 0);
+    const discounted = subtotal * (1 - discount/100);
+    const postage = Number(info.postage || 0);
+    const finalTotal = Number((discounted + postage).toFixed(2));
+
+    // header & meta
+    const left = 40;
+    let y = 40;
+    doc.setFontSize(18);
+    doc.text('PipahCookies - Invois Pesanan', left, y);
+    y += 20;
+    doc.setFontSize(11);
+    doc.text(`No Pesanan: ${info.orderId || ''}`, left, y); y += 16;
+    doc.text(`Tarikh: ${formatMY(info.date || new Date().toISOString())}`, left, y); y += 16;
+    doc.text(`Nama: ${info.buyerName || ''}`, left, y); y += 14;
+    doc.text(`Telefon: ${info.buyerPhone || ''}`, left, y); y += 14;
+
+    // address may be long — print next
+    doc.text(`Alamat: ${info.buyerAddress || ''}`, left, y); y += 18;
+
+    // table header
+    doc.setFontSize(12);
+    doc.text('Produk', left, y); doc.text('Kuantiti', left + 320, y); doc.text('Jumlah (RM)', left + 440, y); y += 8;
+    doc.setLineWidth(0.5);
+    doc.line(left, y, 560, y); y += 12;
+
+    // rows
+    cart.forEach(p => {
+      const line = String(p.title || '');
+      doc.setFontSize(10);
+      doc.text(truncateText(line, 60), left, y);
+      doc.text(String(Number(p.qty || 0)), left + 320, y);
+      const lineTotal = (Number(p.price || 0) * Number(p.qty || 0)).toFixed(2);
+      doc.text(lineTotal, left + 440, y);
+      y += 14;
+      if (y > 740){ doc.addPage(); y = 40; }
+    });
+
+    y += 6;
+    doc.setLineWidth(0.5);
+    doc.line(left, y, 560, y); y += 14;
+
+    // totals
+    doc.text(`Subtotal: RM ${subtotal.toFixed(2)}`, left, y); y += 14;
+    doc.text(`Diskaun: ${discount}%`, left, y); y += 14;
+    doc.text(`Jumlah Selepas Diskaun: RM ${discounted.toFixed(2)}`, left, y); y += 14;
+    doc.text(`Postage: RM ${postage.toFixed(2)}`, left, y); y += 14;
+
+    doc.setFontSize(13);
+    doc.text(`Jumlah Akhir: RM ${finalTotal.toFixed(2)}`, left, y); y += 20;
+
+    // footer line
+    doc.setFontSize(9);
+    doc.text('Generated by PipahCookies Ordering System — Terima kasih!', left, y);
+
+    // save
+    const filename = `Invois_${info.orderId || 'INV'}.pdf`;
+    doc.save(filename);
+  }
+
+  function truncateText(text, maxLen){
+    if (!text) return '';
+    if (text.length <= maxLen) return text;
+    return text.slice(0, maxLen-3) + '...';
+  }
+
+  // show floating prompt after invoice rendered; waits until user presses a button
+  function setupDownloadPrompt(){
+    const prompt = document.getElementById('downloadPrompt');
+    if (!prompt) return;
+    const yes = document.getElementById('promptYes');
+    const no = document.getElementById('promptNo');
+
+    // show prompt with fade-in if invoice exists
+    const cart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const info = JSON.parse(localStorage.getItem(ORDER_KEY) || '{}');
+    if (!cart.length || !info.orderId) return;
+
+    // show after small delay
+    setTimeout(()=> {
+      prompt.classList.add('show');
+    }, 900);
+
+    yes.addEventListener('click', () => {
+      // call existing download function
+      try { downloadPDF(); } catch(e){ console.error(e); }
+      prompt.classList.remove('show');
+    });
+    no.addEventListener('click', () => {
+      prompt.classList.remove('show');
+    });
+  }
+
+  // Render on load
+  document.addEventListener('DOMContentLoaded', () => {
+    renderInvoice();
+    setupDownloadPrompt();
+  });
+</script>
+</body>
+</html>
