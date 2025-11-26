@@ -190,7 +190,7 @@
         <input type="text" id="api-url-input" placeholder="Enter API URL here">
         <button onclick="updateApiUrl()">Reconnect</button>
     </div>
-    <div style="font-size: 10px; color: #aaa; margin-top:5px;">v2.1.0 Panel</div>
+    <div style="font-size: 10px; color: #aaa; margin-top:5px;">v2.0.0 Panel</div>
   </aside>
 
   <main class="main-content">
@@ -346,7 +346,7 @@
 
  <script>
     // --- DEFAULT URL (Can be changed in UI) ---
-    let API_URL = "https://replit.com/@mbi5385/PipahCookies-Backend?s=app";
+    let API_URL = "https://264d386b-ade0-4ce1-867e-b3cf83d2adbb-00-1va99hmslla0w.pike.replit.dev";
     let IS_DEMO = false;
 
     // --- GLOBAL DATA ---
@@ -431,7 +431,10 @@
                     <h4 style="margin:10px 0 5px;">${g.name}</h4>
                     <span class="status-badge" style="background:#fff3cd; color:#856404;">Stock: ${g.stock}</span>
                     <span class="status-badge">RM ${g.price}</span>
-                    <button class="btn" style="background:#f0f0f0; width:100%; margin-top:10px;" onclick="editGallery('${g.id}')">Edit / Replace</button>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn" style="background:#f0f0f0; flex:1;" onclick="editGallery('${g.id}')">Edit</button>
+                        <button class="btn btn-danger" style="flex:1;" onclick="deleteGallery('${g.id}')">Delete</button>
+                    </div>
                 </div>`;
         });
     }
@@ -511,7 +514,110 @@
         btn.disabled = false; btn.innerText = "Save Gallery Item";
     }
 
-    // --- STANDARD PRODUCT ACTIONS (DELETE REMOVED) ---
+    async function deleteGallery(id) {
+        if(!confirm("Delete this gallery item?")) return;
+        if(IS_DEMO) {
+            galleryItems = galleryItems.filter(g => g.id !== id);
+            renderGallery(); showToast("Item Deleted!"); return;
+        }
+        
+        // Attempt 1: Standard DELETE
+        try {
+            const res = await fetch(`${API_URL}/api/gallery/${id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } });
+            if(res.ok) {
+                 await loadDataFromBackend(); 
+                 showToast("Gallery Item Deleted!");
+                 return;
+            }
+        } catch(e) {}
+
+        // Attempt 2: Fallback to POST (if server refused DELETE)
+        try {
+             console.log("Trying fallback delete...");
+             const res = await fetch(`${API_URL}/api/gallery/delete`, { 
+                 method: 'POST', 
+                 headers: {'Content-Type': 'application/json'},
+                 body: JSON.stringify({ id: id })
+             });
+             if(res.ok) {
+                 await loadDataFromBackend(); 
+                 showToast("Gallery Item Deleted!");
+             } else {
+                 const txt = await res.text();
+                 showToast(`Error: ${res.status} ${txt}`);
+             }
+        } catch(e) {
+            showToast("Connection Error during delete");
+        }
+    }
+
+    // --- STANDARD PRODUCT ACTIONS (With Fallback Delete) ---
+    async function deleteProduct(id) {
+        if(!confirm("Are you sure you want to delete this product?")) return;
+        
+        if(IS_DEMO) {
+            products = products.filter(p => p.id !== id);
+            renderProducts();
+            showToast("Product Removed! (Demo Mode)");
+            return;
+        }
+
+        // Attempt 1: Standard DELETE request
+        try {
+            const res = await fetch(`${API_URL}/api/products/${id}`, { 
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            if (res.ok) {
+                 await loadDataFromBackend(); 
+                 showToast("Product Deleted!");
+                 return;
+            }
+        } catch(e) { console.warn("Standard DELETE failed, trying fallback..."); }
+
+        // Attempt 2: Fallback POST request (for servers that block DELETE)
+        try {
+            const res = await fetch(`${API_URL}/api/products/delete`, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+
+            if (res.ok) {
+                 await loadDataFromBackend(); 
+                 showToast("Product Deleted!");
+            } else {
+                 const text = await res.text();
+                 console.error("Delete failed:", text);
+                 showToast(`Error ${res.status}: Server refused delete.`);
+            }
+        } catch(e) {
+            showToast("Connection Error during delete.");
+        }
+    }
+    
+    // ... (Existing Functions for Settings, Product Submit, Orders, Utils kept same) ...
+    function applySettings(s) {
+        if(s.primary) document.getElementById('set-color-primary').value = s.primary;
+        if(s.bg) document.getElementById('set-color-bg').value = s.bg;
+        if(s.brand) document.getElementById('set-brand-name').value = s.brand;
+        updateLiveTheme();
+    }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function switchTab(tabId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        const titles = { 'orders': 'Orders', 'products': 'Products', 'gallery': '3D Gallery', 'feedback': 'Feedback', 'settings': 'Settings' };
+        document.getElementById('page-title').innerText = titles[tabId];
+    }
+    function updateLiveTheme() {
+        const primary = document.getElementById('set-color-primary').value;
+        const bg = document.getElementById('set-color-bg').value;
+        document.documentElement.style.setProperty('--primary', primary);
+        document.documentElement.style.setProperty('--bg-color', bg);
+    }
     function renderProducts() {
         const list = document.getElementById('product-list');
         list.innerHTML = '';
@@ -523,11 +629,13 @@
                     ${mediaHTML}
                     <h4 style="margin:10px 0 5px;">${p.name}</h4>
                     <span class="status-badge">RM ${p.price}</span>
-                    <button class="btn" style="background:#f0f0f0; width:100%; margin-top:10px;" onclick="editProduct('${p.id}')">Edit / Replace</button>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="btn" style="background:#f0f0f0; flex:1;" onclick="editProduct('${p.id}')">Edit</button>
+                        <button class="btn btn-danger" style="flex:1;" onclick="deleteProduct('${p.id}')">Delete</button>
+                    </div>
                 </div>`;
         });
     }
-
     function openProductModal() {
         document.getElementById('edit-id').value = ''; 
         document.getElementById('edit-name').value = ''; 
@@ -553,7 +661,7 @@
             if(idx >= 0) products[idx] = productData; else products.push(productData);
             closeModal('productModal'); renderProducts(); btn.disabled = false; return;
         }
-        
+        // Real fetch logic omitted for brevity as it was correct in previous version
         try {
             await fetch(`${API_URL}/api/products`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(productData) });
             closeModal('productModal'); loadDataFromBackend(); showToast("Saved!");
