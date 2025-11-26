@@ -195,6 +195,16 @@
         .gallery-wrapper { height: 600px; }
     }
     iframe { width: 100%; height: 100%; border: none; }
+    .gallery-iframe {
+    height: 400px; /* Phone height */
+}
+
+/* Media Query: Overrides height for screens wider than 600 pixels (Tablet/Desktop view) */
+@media (min-width: 600px) {
+    .gallery-iframe {
+        height: 600px; /* Desktop height */
+    }
+}
 
     /* --- Cart & Floating UI --- */
     .mobile-bottom-nav {
@@ -257,7 +267,19 @@
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     .hidden { display: none !important; }
     .center-text { text-align: center; }
+ 
+/* Base style: Applied to all screens (Phone view) */
+.gallery-iframe {
+    height: 400px; /* Phone height */
+}
 
+/* Media Query: Overrides height for screens wider than 600 pixels (Tablet/Desktop view) */
+@media (min-width: 600px) {
+    .gallery-iframe {
+        height: 600px; /* Desktop height */
+    }
+}
+  
   </style>
 </head>
 <body>
@@ -282,7 +304,7 @@
     </div>
     <div style="display: flex; flex-direction: column; gap: 5px;">
         <h4 style="margin: 0 0 10px 10px; color: #ccc; font-size: 12px; text-transform: uppercase;">Menu Utama</h4>
-        <a href="https://wa.me/601121243407?text=Nak%20join%20Reseller%20PipahCookies." target="_blank" class="sidebar-link">
+        <a href="https://rspipahcookies.github.io/my/reseller-registration.html" target="_blank" class="sidebar-link">
             <span class="sidebar-icon">💼</span><span>Pendaftaran Reseller</span>
         </a>
         <a href="https://wa.me/601121243407" target="_blank" class="sidebar-link">
@@ -311,12 +333,41 @@
     </div>
   </section>
 
-  <section class="section fade-up" style="animation-delay: 0.1s;">
-    <h2 class="section-title">Stok Terhad</h2>
-    <div class="embed-wrapper" style="height: 80vh; min-height: 600px;">
-        <iframe src="admin.html" title="Jualan" onerror="this.style.display='none'"></iframe>
-    </div>
-  </section>
+   <div class="pipah-gallery-container">
+    <iframe 
+        src="admin.html" 
+        class="pipah-gallery-iframe" 
+        title="PipahCookies Product Gallery"
+        scrolling="no"
+    ></iframe>
+   </div>
+       <style>
+     /* Container for centering the entire embed */
+.pipah-gallery-container {
+    /* Set max width to match the gallery's internal max-width (380px) plus padding */
+    max-width: 400px; 
+    margin: 30px auto; /* Centers the whole gallery horizontally */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Optional: A nice lift effect */
+    border-radius: 10px;
+    background: #f7f3ee; /* Match the gallery's background for a seamless look */
+    padding: 10px; /* Internal padding */
+}
+
+/* Styling for the iFrame itself */
+.pipah-gallery-iframe {
+    width: 100%;
+    /* Set a fixed height that accommodates the gallery (220px) + details card (~80px) */
+    height: 480px; 
+    border: none; /* Crucial: Removes the default iFrame border */
+    display: block;
+    overflow: hidden; /* Prevent scrolls inside the iFrame */
+}
+
+/* IMPORTANT: Ensure your body/main page content has a high enough Z-index 
+   so the fixed cart popup (Z-index 999) doesn't appear under elements 
+   like a fixed header on your main page. */
+
+       </style>
 
   <section id="products" class="section fade-up" style="animation-delay: 0.2s;">
     <h2 class="section-title">Menu Pilihan</h2>
@@ -331,12 +382,34 @@
         </div>
     </div>
   </section>
-  <section class="section fade-up">
-    <h2 class="section-title">3D Showroom</h2>
-    <div class="embed-wrapper gallery-wrapper">
-        <iframe src="3dGallery.html" title="3D Gallery" onerror="this.style.display='none'"></iframe>
-    </div>
-  </section>
+  <section id="gallery" style="background-color: #fafafa; padding: 60px 0; text-align: center;">
+    <p> sila swipe dan tap untuk buka </p>
+    <iframe 
+        src="3dGallery.html" 
+        class="gallery-iframe"
+        style="
+            border: none; 
+            width: 100%; 
+            max-width: 1000px; /* Limits max width on huge screens */
+            display: block; 
+            margin: 0 auto; /* Centers the iframe horizontally */
+        "
+        title="3D Product Gallery"
+        scrolling="no"
+    ></iframe>
+</section>
+
+</section>
+    <section id="gallery">
+ <p> sila tap untuk buka </p>
+  <iframe 
+      src="gallery.html" 
+      width="100%" 
+      style="border:none;" 
+      id="galleryIframe" 
+      scrolling="no">
+  </iframe>
+    </section>
 
   <section id="testimonials" class="section fade-up">
     <h2 class="section-title">Apa Kata Mereka?</h2>
@@ -390,7 +463,7 @@
   
   <a href="https://wa.me/601121243407" class="whatsapp-float" target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="24" height="24" alt="WA">
-    <span>Chat</span>
+    <span></span>
   </a>
   <div class="music-player"><div class="music-disc" id="musicBtn">🎵</div></div>
   <audio id="bgmusic" loop><source src="Images/music.mp3" type="audio/mpeg"></audio>
