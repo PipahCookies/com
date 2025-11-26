@@ -1,1829 +1,702 @@
- <!doctype html>
+<!doctype html>
 <html lang="ms">
 <head>
- <link rel="apple-touch-icon" href="Images/icon.png">
- <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#d2b48c">
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#A67734">
   <title>Pipah Cookies — Homemade rasa Premium</title>
- 
-  <meta property="og:title" content="PipahCookies — Homemade Rasa Premium 🍪" />
-<meta property="og:description" content="Setiap hari lebih manis dengan PipahCookies 🍪 Homemade, FreshBake & Tasty. Klik untuk order!" />
-<meta property="og:image" content="https://pipahcookies.github.io/com/Images/preview.png" />
-<meta property="og:url" content="https://pipahcookies.github.io/com/" />
-<meta property="og:type" content="website" />
-<meta property="og:site_name" content="PipahCookies" />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="PipahCookies — Homemade Rasa Premium 🍪" />
-<meta name="twitter:description" content="Setiap hari lebih manis dengan PipahCookies 🌷 Homemade, FreshBake & Tasty. Klik untuk order!" />
-<meta name="twitter:image" content="https://pipahcookies.github.io/com/Images/preview.png" />
- 
- <style>
- :root{
-    --primary:#A67734;
-    --primary-dark:#d4b390;
-    --accent:#fff1e6;
-    --whatsapp:#25d366;
-    --bg:#fff8f2;
-    --card:#ffffff;
-    --muted:#6b6b6b;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:"Fredoka",sans-serif;background:var(--bg);color:#222;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:"Poppins",sans-serif;color:var(--primary-dark);margin:0 0 8px}
-  a{color:inherit}
-
-/* Header */
-  .site-header{display:block}
-  .header-img{width:100%;height:auto;display:block;object-fit:cover;max-height:360px;border-radius:0 0 14px 14px;box-shadow:0 8px 18px rgba(0,0,0,0.06);animation:fadeUp .9s both}
-/* Nav */
-  .site-nav{position:sticky;top:0;background:var(--primary);z-index:40;padding:10px 0}
-  .nav-list{list-style:none;margin:0;padding:0;display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
-  .nav-list a{color:#fff;text-decoration:none;font-weight:700;padding:8px 12px;border-radius:8px;transition:transform .15s}
-  .nav-list a:hover{transform:translateY(-3px);background:rgba(255,255,255,0.08)}
-
-/* Carousel */
-  .offers-section{padding:18px;background:linear-gradient(180deg,var(--accent),transparent)}
-  .carousel{max-width:1100px;margin:0 auto;position:relative;overflow:hidden;border-radius:12px}
-  .slides{display:flex;transition:transform .6s ease}
-  .slide{min-width:100%;height:240px;object-fit:cover;display:block}
-  .dots{position:absolute;left:50%;transform:translateX(-50%);bottom:10px;display:flex;gap:8px}
-  .dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,0.6);cursor:pointer}
-  .dots button.active{background:#fff}
-
-/* Sections */
-  .section{padding:36px 18px}
-  .lead{max-width:900px;margin:0 auto;color:var(--muted);line-height:1.5}
-
-/* 🔹 Product Section Layout */
-.products {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-/* 🔹 Default: 3 per line (tablet & PC) */
-.product-card {
-  flex: 0 0 calc(33.333% - 20px); /* ✅ 3 per row */
-  height: 350px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  overflow: hidden;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-/* 🔹 Small screens (phones): 2 per line */
-@media (max-width: 600px) {
-  .product-card {
-    flex: 0 0 calc(50% - 20px);
-  }
-}
-  /* 🖼 Product Image Slider */
-.product-slider {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.product-img {
-  width: 100%;
-  height: 160px;
-  object-fit: contain;
-  transform: scale(0.9);     /* zoom out slightly */
-  transition: transform 0.10s ease-in-out;
-  display: none;
-}
-
-.product-img.active {
-  display: block;
-}
-
-/* ⚪ Dots Navigation */
-.slider-dots {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-}
-
-.slider-dots .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.slider-dots .dot.active {
-  background: var(--primary-dark);
-}
-
-/* Product grid */
- .product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px;
-  max-width: 1100px;
-  margin: 12px auto;
-}
-  .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 12px 24px rgba(0,0,0,0.06);transition:transform .18s}
-  .card:hover{transform:translateY(-8px)}
-  .product -img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-  .old-price{text-decoration:line-through;color:gray;font-size:14px;}
-  .price{color:var(--primary-dark);font-weight:700;margin-bottom:6px}
-
-/* qty & buttons */
-  .qty-control{display:flex;justify-content:center;align-items:center;gap:8px;margin:10px 0}
-  .qty-btn{background:var(--primary);color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:18px;cursor:pointer;transition:transform .12s}
-  .qty-btn:hover{background:var(--primary-dark);transform:scale(1.04)}
-  .qty-input{min-width:48px;text-align:center;border-radius:8px;border:1px solid #eee;padding:6px;background:#fff}
-  .btn{display:inline-block;padding:10px 14px;border-radius:22px;border:none;cursor:pointer;font-weight:800;transition:transform .14s,box-shadow .14s}
-  .btn.primary{background:var(--primary);color:#fff}
-  .btn.primary:hover{background:var(--primary-dark);transform:translateY(-3px)}
-  .btn.secondary{background:#fff;color:var(--primary);border:2px solid var(--primary)}
-  .btn.checkout{background:var(--whatsapp);color:#fff}
-  .btn.checkout:hover{background:#1ebe57;transform:scale(1.03)}
-
-/* testimonials gallery faq */
-  .testimonials{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-  blockquote{background:var(--accent);padding:14px;border-radius:10px;margin:0;font-style:italic;color:#403b3b}
-  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:1000px;margin:0 auto}
-  .gallery-grid img{width:100%;height:140px;object-fit:cover;border-radius:10px;display:block}
-  .faq{max-width:900px;margin:0 auto;text-align:left}
-  .faq .q{background:#fff;padding:12px;border-radius:8px;margin-bottom:10px;box-shadow:0 6px 12px rgba(0,0,0,0.04)}
-  .faq .a{margin-top:8px;color:var(--muted)}
+  <link rel="apple-touch-icon" href="Images/icon.png">
   
-.whatsapp-share-btn {
-  display: inline-block;
-  margin-top: 20px;
-  background: #25D366;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 18px;
-  padding: 12px 25px;
-  border-radius: 25px;
-  text-decoration: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-}
-
-.whatsapp-share-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-  background: #1ebe57;
-}
-/* floating cart icon */
-  #cart-icon{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;border:none;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;z-index:120;box-shadow:0 14px 30px rgba(0,0,0,0.16);transition:transform .18s}
-  #cart-icon:hover{transform:scale(1.06)}
-  #cart-badge{position:absolute;top:6px;right:6px;background:#ff3b3b;color:#fff;padding:3px 7px;border-radius:50%;font-weight:800;font-size:12px;box-shadow:0 6px 12px rgba(0,0,0,0.12)}
-
-/* cart panel sliding */
-  .cart-panel{position:fixed;right:20px;bottom:92px;width:340px;max-height:72vh;overflow:auto;background:#fff;padding:12px;border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,0.18);z-index:120;transform:translateY(10px);opacity:0;pointer-events:none}
-  .cart-panel.show{transform:translateY(0);opacity:1;pointer-events:auto;animation:slideUp .26s both}
-  .cart-header{display:flex;justify-content:space-between;align-items:center}
-  .close-cart{background:transparent;border:none;font-size:18px;cursor:pointer}
-  .cart-items{list-style:none;padding:0;margin:10px 0;display:flex;flex-direction:column;gap:8px}
-  .cart-items li{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:#fff9f5;border:1px solid #fee6d8}
-  .cart-items li button{margin-left:6px;padding:6px 8px;border-radius:6px;border:none;cursor:pointer}
-
-/* checkout form */
-  .checkout-form{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-  .checkout-form input,.checkout-form textarea{padding:8px;border-radius:8px;border:1px solid #eee;font-family:inherit}
-
-/* misc */
-  .cart-summary{margin-top:6px}
-  .cart-actions{margin-top:10px;display:flex;gap:8px;justify-content:space-between}
-  .hidden{display:none}
-
-/* animations */
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
-  .added{animation:bounce .46s both}
-  @keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  .fade-up{opacity:0;animation:fadeInUp .9s forwards}
-
-/* responsive tweaks */
-  @media (max-width:900px){.cart-panel{right:12px;left:12px;width:auto;bottom:90px}.header-img{max-height:280px}}
-  @media (max-width:520px){.nav-list{gap:9px;padding:6px}.slide{height:160px}.product-img{height:130px}}
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
+    :root {
+      /* Defaults if no config loaded */
+      --primary: #A67734;
+      --primary-dark: #8b5e2b;
+      --accent: #fff1e6;
+      --bg-color: #fdfbf7;
+      --card-bg: #ffffff;
+      --text-main: #4a2e19;
+      --text-muted: #8c7b70;
+      --radius: 16px;
+      --safe-area-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
     body {
-      font-family: "Poppins", sans-serif;
-      background: #fff8f6;
       margin: 0;
-      padding: 0;
+      padding-bottom: calc(90px + var(--safe-area-bottom));
+      font-family: "Poppins", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      overflow-x: hidden;
     }
 
-    .testimonial-section {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 20px;
-      touch-action: pan-y;
-      background: linear-gradient(to bottom right, #fff5f7, #ffeef1);
+    h1, h2, h3 { font-family: "Fredoka", sans-serif; margin-top: 0; color: var(--text-main); }
+    a { text-decoration: none; color: inherit; transition: 0.3s; }
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* --- Header (Transparent & Floating) --- */
+    .app-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: transparent; padding: 15px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s;
+    }
+    .header-left { display: flex; align-items: center; gap: 15px; }
+    .hamburger-btn {
+      background: none; border: none; font-size: 24px; color: var(--primary);
+      text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8); padding: 0; display: flex; align-items: center;
+    }
+    .brand-logo { 
+      font-family: 'Fredoka', sans-serif; font-size: 22px; font-weight: 700; color: var(--primary);
+      text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+    }
+    .brand-logo span { color: var(--primary-dark); }
+    .desktop-nav { display: none; }
+    @media (min-width: 768px) {
+      .desktop-nav { display: flex; gap: 30px; font-weight: 500; }
+      .desktop-nav a { text-shadow: 0 2px 5px rgba(255,255,255,0.8); }
+      .mobile-bottom-nav { display: none !important; }
+      body { padding-bottom: 0; }
     }
 
+    /* --- Sidebar --- */
+    .sidebar-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 1100; opacity: 0; pointer-events: none; transition: 0.3s;
+    }
+    .sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+    .sidebar-panel {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 280px; background: #fff;
+      z-index: 1101; transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 25px; display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    .sidebar-panel.open { transform: translateX(0); }
+    .sidebar-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 15px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 12px; padding: 15px 10px;
+      font-size: 16px; font-weight: 500; color: var(--text-main); border-radius: 10px; transition: background 0.2s;
+    }
+    .sidebar-link:hover { background: var(--accent); color: var(--primary); }
+    .sidebar-icon { font-size: 20px; width: 30px; text-align: center; }
+
+    /* --- Hero Slider --- */
+    .hero {
+      position: relative; width: 100%; height: 320px;
+      background: #ddd; border-radius: 0 0 30px 30px; overflow: hidden;
+    }
+    @media (min-width: 768px) { .hero { height: 420px; border-radius: 0 0 50px 50px; } }
+    .hero-track { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+    .hero-slide { min-width: 100%; height: 100%; position: relative; }
+    .hero-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; bottom: 0; left: 0; width: 100%; padding: 60px 20px 40px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: #fff; pointer-events: none; text-align: center;
+    }
+    .hero-dots {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;
+    }
+    .hero-dot {
+      width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: 0.3s;
+    }
+    .hero-dot.active { background: #fff; transform: scale(1.3); }
+
+    /* --- Sections --- */
+    .section { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
     .section-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #000000;
-      margin-bottom: 25px;
-      text-align: center;
-      text-shadow: 0 1px 3px rgba(255, 192, 203, 0.3);
+      text-align: center; font-size: 26px; margin-bottom: 40px;
+      position: relative; width: 100%; display: block;
+    }
+    .section-title::after {
+      content: ''; display: block; width: 50px; height: 4px;
+      background: var(--primary); border-radius: 2px; margin: 10px auto 0;
     }
 
-    .testimonial-bg {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      filter: blur(40px);
-      opacity: 0.4;
-      transition: background-image 1s ease-in-out;
+    /* --- Profile & Grid --- */
+    .profile-section {
+      background: #fff; padding: 40px 20px; border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; max-width: 800px; margin: 0 auto;
+    }
+    .profile-avatar {
+      width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--accent); margin: 0 auto 20px; object-fit: cover;
     }
 
-    .testimonial-gallery {
-      position: relative;
-      width: 90%;
-      max-width: 700px;
-      height: 420px;
-      border-radius: 30px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
-      border: 4px solid #000000;
-      background: #fff;
+    .product-grid { display: grid; gap: 15px; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 600px) { .product-grid { gap: 25px; grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    .product-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden;
+      display: flex; flex-direction: column; transition: transform 0.2s;
+    }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-slider { position: relative; aspect-ratio: 1/1; background: #f9f9f9; }
+    .product-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .product-img.active { display: block; }
+    
+    .card-body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+    .card-body h3 { font-size: 15px; margin-bottom: 5px; flex-grow: 1; line-height: 1.3; }
+    .price { font-weight: 700; color: var(--primary); font-size: 16px; margin-bottom: 10px; display:block;}
+    
+    .qty-control {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--accent); border-radius: 8px; padding: 2px; margin-bottom: 10px;
+    }
+    .qty-btn {
+      width: 28px; height: 28px; border: none; background: #fff;
+      border-radius: 6px; color: var(--primary); font-weight: bold;
+    }
+    .qty-input { width: 30px; text-align: center; border: none; background: transparent; font-weight: 600; font-size:14px; }
+    .add-btn {
+      width: 100%; padding: 10px; background: var(--primary); color: white;
+      border: none; border-radius: 8px; font-weight: 600; font-size: 13px;
     }
 
-    .testimonial-gallery img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1.2s ease-in-out;
+    /* --- Testimonials, Embeds, FAQ --- */
+    .testimonial-card {
+      background: #fff; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+    }
+    @media (min-width: 768px) {
+      .testimonial-card { flex-direction: row; align-items: center; }
+      .tst-img-box { width: 50%; height: 350px !important; }
+      .tst-content-box { width: 50%; padding: 40px !important; }
+    }
+    .tst-img-box { position: relative; width: 100%; height: 250px; background: #f0f0f0; }
+    .tst-img-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; opacity: 0; transition: opacity 0.5s; }
+    .tst-img-box img.active { opacity: 1; }
+    .tst-content-box { padding: 30px 20px; text-align: center; background: #fff5f7; }
+    .quote-text {
+      font-size: 16px; font-style: italic; color: #555; line-height: 1.6; margin-bottom: 20px;
+      min-height: 80px; display: flex; align-items: center; justify-content: center;
+    }
+    .nav-arrows button {
+      background: white; border: 1px solid #ddd; width: 40px; height: 40px;
+      border-radius: 50%; font-size: 18px; margin: 0 5px; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .embed-wrapper {
+      background: #f4f4f4; border-radius: 20px; overflow: hidden;
+      width: 100%; margin: 0 auto; position: relative;
+    }
+    .game-wrapper { max-width: 700px; height: 300px; }
+    .gallery-wrapper { height: 500px; }
+    @media (min-width: 768px) {
+        .game-wrapper { height: 400px; }
+        .gallery-wrapper { height: 600px; }
+    }
+    iframe { width: 100%; height: 100%; border: none; }
+
+    /* --- Cart & Floating UI --- */
+    .mobile-bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+      border-top: 1px solid #eee; display: flex; justify-content: space-around;
+      padding: 10px 0 calc(10px + var(--safe-area-bottom)); z-index: 999;
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #aaa; background: none; border: none; }
+    .nav-item.active { color: var(--primary); }
+    .nav-icon { font-size: 20px; margin-bottom: 2px; }
+
+    .fab-cart {
+      position: fixed; bottom: 100px; right: 20px; background: var(--primary); color: white;
+      width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 20px rgba(166, 119, 52, 0.3); z-index: 990; border: none; font-size: 24px;
+    }
+    .fab-badge {
+      position: absolute; top: -5px; right: -5px; background: #ff4757;
+      color: white; font-size: 11px; font-weight: bold; width: 20px; height: 20px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;
+    }
+    .whatsapp-float {
+        position: fixed; right: 0; top: 70%;
+        background: #25D366; color: white; padding: 10px 15px 10px 20px;
+        border-radius: 30px 0 0 30px; display: flex; align-items: center; gap: 8px;
+        z-index: 980; font-weight: 600; font-size: 14px;
+        box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); transition: transform 0.3s;
+    }
+    .whatsapp-float:hover { transform: translateX(-5px); }
+    .music-player { position: fixed; bottom: 105px; left: 20px; z-index: 990; }
+    .music-disc {
+      width: 45px; height: 45px; background: rgba(255,255,255,0.9);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #fff; cursor: pointer;
     }
 
-    .testimonial-gallery img.active {
-      opacity: 1;
+    /* Cart Panel & Utils */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s;
     }
-
-    .quote {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.8);
-      padding: 12px 20px;
-      border-radius: 20px;
-      color: #000000;
-      font-weight: 600;
-      font-size: 1rem;
-      opacity: 0;
-      transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-      text-align: center;
-      max-width: 85%;
-      box-shadow: 0 4px 10px rgba(255, 182, 193, 0.3);
+    .cart-overlay.open { opacity: 1; pointer-events: auto; }
+    .cart-panel {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff; border-radius: 20px 20px 0 0;
+      padding: 20px; padding-bottom: calc(20px + var(--safe-area-bottom));
+      transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      z-index: 1001; max-height: 85vh; display: flex; flex-direction: column;
     }
-
-    .quote.active {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    @media (min-width: 768px) { .cart-panel { width: 400px; left: auto; right: 20px; bottom: 20px; border-radius: 20px; } }
+    .cart-panel.open { transform: translateY(0); }
+    .cart-items-scroll { overflow-y: auto; flex: 1; margin-bottom: 15px; }
+    
+    .checkout-form input, .checkout-form textarea, .checkout-form select {
+        width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee;
+        border-radius: 8px; font-family: inherit; background: #f9f9f9;
     }
+    .btn-primary { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 25px; width: 100%; font-weight: 600; font-size:15px;}
+    .fade-up { animation: fadeUp 0.8s ease forwards; opacity: 0; transform: translateY(20px); }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .hidden { display: none !important; }
+    .center-text { text-align: center; }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 700px;
-      margin-top: 15px;
-      padding: 0 25px;
-    }
-
-    .controls button {
-      background: rgba(255, 255, 255, 0.8);
-      border: none;
-      font-size: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      width: 45px;
-      height: 45px;
-      box-shadow: 0 4px 10px rgba(255, 182, 193, 0.3);
-      color: #F7BF87;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-
-    .controls button:hover {
-      background: #fffcb5;
-      color: #fff;
-    }
-
-    .dots {
-      display: flex;
-      gap: 10px;
-      margin-top: 25px;
-      justify-content: center;
-    }
-
-    .dots button {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      border: none;
-      background: #000000 ;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-
-    .dots button.active {
-      background: #A67734;
-      transform: scale(1.4);
-    }
-
-    @media (max-width: 600px) {
-      .testimonial-gallery {
-        height: 300px;
-      }
-
-      .quote {
-        font-size: 0.9rem;
-        padding: 10px 14px;
-      }
-    }
   </style>
- <style>
-/* ... your other CSS styles here ... */
-
-/* --- Responsive Iframe Styles --- */
-
-/* Base style: Applied to all screens (Phone view) */
-.gallery-iframe {
-    height: 400px; /* Phone height */
-}
-
-/* Media Query: Overrides height for screens wider than 600 pixels (Tablet/Desktop view) */
-@media (min-width: 600px) {
-    .gallery-iframe {
-        height: 600px; /* Desktop height */
-    }
-}
- </style>
- 
 </head>
 <body>
 
-  <header class="site-header">
-    <img src="Images/headerrr.png" alt="Pipah Cookies" class="header-img">
+  <header class="app-header">
+    <div class="header-left">
+        <button class="hamburger-btn" onclick="toggleSidebar()"><span style="font-size: 26px;">☰</span></button>
+        <div class="brand-logo">🍪 Pipah<span>Cookies</span></div>
+    </div>
+    <nav class="desktop-nav">
+      <a href="#products">Menu</a>
+      <a href="#about">Tentang Kami</a>
+      <a href="#game">Game</a>
+    </nav>
   </header>
 
-  <nav class="site-nav">
-    <ul class="nav-list">
-      <li><a href="#offers">Tawaran</a></li>
-      <li><a href="#products">Produk</a></li>
-      <li><a href="#about">Tentang</a></li>
-      <li><a href="#testimonials">Testimoni</a></li>
-      <li><a href="#gallery">Galeri</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Hubungi</a></li>
-    </ul>
-  </nav>
-
-
-  <main>
-<div class="pipah-gallery-container">
-    <iframe 
-        src="admin.html" 
-        class="pipah-gallery-iframe" 
-        title="PipahCookies Product Gallery"
-        scrolling="no"
-    ></iframe>
-</div>
-     <style>
-     /* Container for centering the entire embed */
-.pipah-gallery-container {
-    /* Set max width to match the gallery's internal max-width (380px) plus padding */
-    max-width: 400px; 
-    margin: 30px auto; /* Centers the whole gallery horizontally */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Optional: A nice lift effect */
-    border-radius: 10px;
-    background: #f7f3ee; /* Match the gallery's background for a seamless look */
-    padding: 10px; /* Internal padding */
-}
-
-/* Styling for the iFrame itself */
-.pipah-gallery-iframe {
-    width: 100%;
-    /* Set a fixed height that accommodates the gallery (220px) + details card (~80px) */
-    height: 480px; 
-    border: none; /* Crucial: Removes the default iFrame border */
-    display: block;
-    overflow: hidden; /* Prevent scrolls inside the iFrame */
-}
-
-/* IMPORTANT: Ensure your body/main page content has a high enough Z-index 
-   so the fixed cart popup (Z-index 999) doesn't appear under elements 
-   like a fixed header on your main page. */
-
-     </style>
-     
-     
-    <section id="products" class="section fade-up">
-  <h2>Produk Kami</h2>
-
-  <div class="product-grid" id="product-grid">
-
-    <article class="card product-card">
-      <div class="product-slider">
-        <img src="Images/ss1.jpg" class="product-img active" alt="Seasalt (1)">
-        <img src="Images/ss2.jpg" class="product-img" alt="Seasalt (2)">
-        <img src="Images/ss3.jpg" class="product-img" alt="Seasalt (3)">
-        <div class="slider-dots">
-          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      </div>
-      <h3>Seasalt Cookies (65 pcs)</h3>
-       <p> <span class="price">RM16</span></p>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeProductQty('p1', -1)">−</button>
-        <input id="qty-p1" class="qty-input" type="number" readonly value="0" min="0">
-        <button class="qty-btn" onclick="changeProductQty('p1', 1)">+</button>
-      </div>
-      <button class="btn primary" onclick="addToCart('p1','Seasalt Cookies (65pcs)',16)">Tambah ke Troli</button>
-    </article>
-
-    <article class="card product-card">
-      <div class="product-slider">
-        <img src="Images/ch1.jpg" class="product-img active" alt="ChocHazelnut (1)">
-        <img src="Images/ch2.jpg" class="product-img" alt="ChocHazelnut (2)">
-        <img src="Images/ch3.jpg" class="product-img" alt="ChocHazelnut (3)">
-        <div class="slider-dots">
-          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      </div>
-      <h3>ChocHazelnut Button</h3>
-      <p> <span class="price">RM22</span></p>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeProductQty('p2', -1)">−</button>
-        <input id="qty-p2" class="qty-input" type="number" readonly value="0" min="0">
-        <button class="qty-btn" onclick="changeProductQty('p2', 1)">+</button>
-      </div>
-      <button class="btn primary" onclick="addToCart('p2','ChocHazelnut Button(38pcs)',22)">Tambah ke Troli</button>
-    </article>
-
-    <article class="card product-card">
-      <div class="product-slider">
-        <img src="Images/br1.jpg" class="product-img active" alt="Brownies Cookies (1)">
-        <img src="Images/br2.jpg" class="product-img" alt="Brownies Cookies (2)">
-        <img src="Images/br3.jpg" class="product-img" alt="Brownies Cookies (3)">
-        <div class="slider-dots">
-          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      </div>
-      <h3>Brownies Cookies (70pcs)</h3>
-      <p> <span class="price">RM17</span></p>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeProductQty('p3', -1)">−</button>
-        <input id="qty-p3" class="qty-input" type="number" readonly value="0" min="0">
-        <button class="qty-btn" onclick="changeProductQty('p3', 1)">+</button>
-      </div>
-      <button class="btn primary" onclick="addToCart('p3','Brownies Cookies(70pcs)',19)">Tambah ke Troli</button>
-    </article>
-
-    <article class="card product-card">
-      <div class="product-slider">
-        <img src="Images/bc1.jpg" class="product-img active" alt="Black Cookies (1)">
-        <img src="Images/bc2.jpg" class="product-img" alt="Black Cookies (2)">
-        <img src="Images/bc3.jpg" class="product-img" alt="Black Cookies (3)">
-        <div class="slider-dots">
-          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      </div>
-      <h3>Black Cookies (80pcs)</h3>
-      <p><span class="price">RM19</span></p>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeProductQty('p4', -1)">−</button>
-        <input id="qty-p4" class="qty-input" type="number" readonly value="0" min="0">
-        <button class="qty-btn" onclick="changeProductQty('p4', 1)">+</button>
-      </div>
-      <button class="btn primary" onclick="addToCart('p4','Black Cookies(80pcs)',19)">Tambah ke Troli</button>
-    </article>
-
-    <article class="card product-card">
-      <div class="product-slider">
-        <img src="Images/rv1.jpg" class="product-img active" alt="RedVelvet Button (1)">
-        <img src="Images/rv2.jpg" class="product-img" alt="RedVelvet Button (2)">
-        <img src="Images/rv3.jpg" class="product-img" alt="RedVelvet Button (3)">
-        <div class="slider-dots">
-          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      </div>
-      <h3>RedVelvet Button</h3>
-      <p> <span class="price">RM20</span></p>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeProductQty('p5', -1)">−</button>
-        <input id="qty-p5" class="qty-input" type="number" readonly value="0" min="0">
-        <button class="qty-btn" onclick="changeProductQty('p5', 1)">+</button>
-      </div>
-      <button class="btn primary" onclick="addToCart('p5','RedVelvet Button',20)">Tambah ke Troli</button>
-    </article>
-
-        <article class="card product-card">
-      <div class="product-slider">
-        <img src="Images/dc1.jpg" class="product-img active" alt="DarkChoc Cookies (1)">
-        <img src="Images/dc2.jpg" class="product-img" alt="DarkChoc Cookies (2)">
-        <img src="Images/dc3.jpg" class="product-img" alt="DarkChoc Cookies (3)">
-        <div class="slider-dots">
-          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-        </div>
-      </div>
-      <h3>DarkChoc Cookies (70pcs)</h3>
-      <p> <span class="price">RM18</span></p>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeProductQty('p6', -1)">−</button>
-        <input id="qty-p6" class="qty-input" type="number" readonly value="0" min="0">
-        <button class="qty-btn" onclick="changeProductQty('p6', 1)">+</button>
-      </div>
-      <button class="btn primary" onclick="addToCart('p6','DarkChoc Cookies(70pcs)',19)">Tambah ke Troli</button>
-    </article>
-
-  </div>
-</section>
-
-    <section id="about" class="section fade-up">
-      <h2>*PERHATIAN*</h2>
-      <p class="lead">*• KOS POSTAGE BERMULA RM5 KEATAS BERDASARKAN JUMLAH PESANAN (JIKA MENCUKUPI MOQ MUNGKIN ADA DISKAUN). </p>
-      <p class="lead">• SILA CEK PESANAN SEMULA DI TROLI SEBELUM TEKAN PESAN.</p>
-    </section>
-    
-    <section id="about" class="section fade-up">
-      <h2>Tentang Kami</h2>
-      <p class="lead">Assalamualaikum dan sejahtera 
-Hai kami dari Pipah Cookies sudah beroperasi sejak 2020, Kami menjual produk baked fresh, homemade, sedia masak, pre-order, frozen dan juga produk bungkusan (ready to post). </p>
-
-      <p class="lead">Kualiti dan citarasa PREMIUM adalah keutamaan kami, Alhamdulillah Allah bagi rasa sedap dan InshaAllah lebih murah (; .</p>
-      
-      <p class="lead">Jemput mencuci mata, dan membeli belah, inshaaAllah jauh kami pos, dekat bole greb atau lalamuv boleh juga self-pickup,</p>
-      <p class="lead">*Harga belum termasuk postage fee* </p>
-    </section>
-
-     <section id="cookie-game" style="text-align:center; margin:70px 0; padding:40px 0; background:#fffaf0; border-radius:20px;">
-  <h2 style="font-family:Poppins,sans-serif; color:#5a3e1b; margin-bottom:20px;">
-    Run for the cookie !! - Dino 🦖 
-  </h2>
-  <p style="font-family:Poppins,sans-serif; color:#7a5630; margin-bottom:20px;">
-    Santai² kawan main game dino makan cookies dulu 😄
-  </p>
-  <iframe 
-    src="game/index.html" 
-    style="width:95%; max-width:700px; height:360px; border:none; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.15); background:#fff;" 
-    title="Cookie Dino Game" 
-    loading="lazy">
-  </iframe>
-  <a href="https://wa.me/?text=Play Cookie Dino 🍪 on my website: https://pipahcookies.github.io/com/game/index.html#cookie-game"
-     target="_blank"
-     class="whatsapp-share-btn">
-     📲 Share game Dino kat WhatsApp member 😄
-  </a>
-</section>
-    
-<a href="https://wa.me/601121243407?text=Hai saya nak tanya tentang cookies 🍪" 
-   class="whatsapp-ribbon" target="_blank">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
-  <span>🤙</span>
-</a>
-
-<style>
-.whatsapp-ribbon {
-  position: fixed;
-  top: 50%;
-  right: -120px; /* start hidden off screen */
-  transform: translateY(-50%);
-  background: linear-gradient(145deg, #d2b48c, #b58b64);
-  color: #4a2e19;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 10px 15px;
-  border-radius: 10px 0 0 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Poppins', sans-serif;
-  opacity: 0;
-  animation: slideIn 1s ease-out forwards;
-  animation-delay: 1s;
-}
-.whatsapp-ribbon:hover {
-  background: linear-gradient(145deg, #b58b64, #d2b48c);
-  transform: translateY(-50%) translateX(-5px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.3);
-}
-.whatsapp-ribbon img {
-  width: 22px;
-  height: 22px;
-  filter: brightness(0) saturate(100%) invert(24%) sepia(11%) saturate(1097%) hue-rotate(337deg) brightness(95%) contrast(88%);
-}
-.whatsapp-ribbon span {
-  font-size: 14px;
-  color: #4a2e19;
-}
-
-/* ✨ Slide-in animation */
-@keyframes slideIn {
-  0% {
-    right: -120px;
-    opacity: 0;
-  }
-  100% {
-    right: 0;
-    opacity: 1;
-  }
-}
-
-/* 📱 Mobile Friendly */
-@media (max-width: 768px) {
-  .whatsapp-ribbon {
-    padding: 8px 10px;
-    font-size: 13px;
-    gap: 5px;
-  }
-  .whatsapp-ribbon img {
-    width: 18px;
-    height: 18px;
-  }
-  .whatsapp-ribbon span {
-    font-size: 12px;
-  }
-}
-</style>
-   
-    <section class="testimonial-section" id="testimonials">
-    <h2 class="section-title">Apa kata pelanggan kami? (boleh slide < >) </></h2>
-    <div class="testimonial-bg"></div>
-
-    <div class="testimonial-gallery">
-   
-      <img src="Images/tst1.jpg" class="active" alt="testimonial 1" />
-      <img src="Images/tst2.jpg" alt="testimonial 2" />
-      <img src="Images/tst3.jpg" alt="testimonial 3" />
-      <img src="Images/tst.jpg" alt="testimonial 4" />
-
-      <div class="quote active">"Founder SK sendiri puji biskut brownies dan  seasalt cookies sedapp"</div>
-      <div class="quote">"The seasalt biscuits are so tasty, thank you once again"</div>
-      <div class="quote">"Sedap nya biskut pipah 🤭🤭"</div>
-      <div class="quote">"Kenapa cookies sedap giler 🤎"</div>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <aside class="sidebar-panel" id="sidebar-panel">
+    <div class="sidebar-header">
+        <div class="brand-logo">Pipah<span>Cookies</span></div>
+        <button onclick="toggleSidebar()" style="background:none; border:none; font-size:24px; color:#999;">✕</button>
     </div>
-
-    <div class="controls">
-      <button id="prev">‹</button>
-      <button id="next">›</button>
+    <div style="display: flex; flex-direction: column; gap: 5px;">
+        <h4 style="margin: 0 0 10px 10px; color: #ccc; font-size: 12px; text-transform: uppercase;">Menu Utama</h4>
+        <a href="https://wa.me/601121243407?text=Nak%20join%20Reseller%20PipahCookies." target="_blank" class="sidebar-link">
+            <span class="sidebar-icon">💼</span><span>Pendaftaran Reseller</span>
+        </a>
+        <a href="https://wa.me/601121243407" target="_blank" class="sidebar-link">
+            <span class="sidebar-icon">📞</span><span>Hubungi Kami</span>
+        </a>
+        <div style="height: 1px; background: #eee; margin: 15px 0;"></div>
+        <a href="#products" onclick="toggleSidebar()" class="sidebar-link"><span class="sidebar-icon">🍪</span><span>Produk</span></a>
+        <a href="#game" onclick="toggleSidebar()" class="sidebar-link"><span class="sidebar-icon">🦖</span><span>Game</span></a>
     </div>
-
-    <div class="dots"></div>
-  </section>
-  
-         
-<section id="gallery" style="background-color: #fafafa; padding: 60px 0; text-align: center;">
-    <p> sila swipe dan tap untuk buka </p>
-    <iframe 
-        src="3dGallery.html" 
-        class="gallery-iframe"
-        style="
-            border: none; 
-            width: 100%; 
-            max-width: 1000px; /* Limits max width on huge screens */
-            display: block; 
-            margin: 0 auto; /* Centers the iframe horizontally */
-        "
-        title="3D Product Gallery"
-        scrolling="no"
-    ></iframe>
-</section>
-
-</section>
-    <section id="gallery">
- <p> sila tap untuk buka </p>
-  <iframe 
-      src="gallery.html" 
-      width="100%" 
-      style="border:none;" 
-      id="galleryIframe" 
-      scrolling="no">
-  </iframe>
-</section>
-
-    <section id="faq" class="section fade-up">
-      <h2>Soalan Lazim</h2>
-      <div class="faq">
-        <div class="q"><strong>S:</strong> Adakah anda mempunyai khidmat penghantaran?<div class="a">J: Ya — penghantaran di seluruh Malaysia termasuk sabah dan sarawak.</div></div>
-        <div class="q"><strong>S:</strong> Bagaimana payment dan postage ?<div class="a">J: Kami menyediakan pembayaran online transfer,QR Duitnow,dan COD- postage bergantung kepada berat bungkusan(Tapi jika mencukupi MOQ mungkin ada diskaun t&c apply.</div></div>
-        <div class="q"><strong>S:</strong> Adakah biskut anda halal?<div class="a">J: Ya — bahan yang digunakan adalah Halal 100%.</div></div>
-        <div class="q"><strong>S:</strong> Berapa lama ketahanan?<div class="a">J: Disyorkan paling lama 30 hari jika disimpan rapat.</div></div>
-      </div>
-    </section>
-
- <section id="comments" style="background:#f7f3ef;padding:30px;border-radius:20px;margin:40px auto;max-width:700px;">
-  <h2 style="text-align:center;color:#5a3e36;">💬 Komen Pelanggan</h2>
-  <form id="commentForm" style="margin-top:20px;">
-    <input type="text" id="name" placeholder="Nama anda" required 
-           style="width:100%;padding:10px;margin-bottom:10px;border-radius:10px;border:1px solid #d4b89f;">
-    <textarea id="message" placeholder="Tinggalkan komen anda..." required 
-              style="width:100%;padding:10px;height:100px;border-radius:10px;border:1px solid #d4b89f;"></textarea>
-    <button type="submit" 
-            style="background:#b4845c;color:white;padding:10px 20px;border:none;border-radius:10px;cursor:pointer;">
-      Hantar
-    </button>
-  </form>
-
-  <div id="commentList" style="margin-top:25px;"></div>
-</section>
-
-
-    <section id="contact" class="section fade-up">
-      <h2>Hubungi Kami</h2>
-      <p>Untuk pesanan atau pertanyaan, hantarkan mesej melalui WhatsApp atau Follow dan chat di shopee dan insta kami.</p>
-      <p><a class="link" href="https://my.shp.ee/6bHjnr2">Shopee@pipahcookies</a></p>
-     <p><a class="link" href="https://vt.tiktok.com/ZSHvSVXWFuQoH-lNnv1/">TiktokShop@pipahcookies</a></p>
-       <p><a class="link" href="https://www.facebook.com/share/16bQFus2rd/">Facebook@pipahcookies</a></p>
-      <p><a class="btn secondary" href="#" onclick="window.open('https://wa.me/601121243407','_blank')">Chat di WhatsApp</a></p>
-    </section>
-   
-  
-
-  
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-
-<audio id="bgmusic" loop muted>
-  <source src="Images/music.mp3" type="audio/mpeg">
-</audio>
-
-<div id="musicWrapper" style="position:fixed; bottom:20px; left:20px; z-index:9999; display:flex; align-items:center; transition:opacity 0.8s ease, transform 0.8s ease;">
-  <button id="musicBtn" class="music-btn">🍪</button>
-  <span id="musicText" class="music-text">Play if u Chilling...</span>
-</div>
-
-<style>
-.music-btn {
-  background-color: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(0px);
-  border: 0px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  width: 55px;
-  height: 55px;
-  font-size: 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px rgba(255,255,255,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-}
-
-.music-text {
-  color: white;
-  font-family: 'Dancing Script', cursive;
-  font-size: 17px;
-  margin-left: 14px;
-  opacity: 0;
-  transform: translateX(-25px);
-  transition: all 0.8s ease;
-  position: relative;
-  top: -2px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
-@keyframes glowPulse {
-  0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); }
-  100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-}
-
-@keyframes spinDisk {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.playing {
-  animation: glowPulse 2s infinite;
-  background-color: rgba(255, 204, 0, 0.4);
-  border-color: rgba(255, 204, 0, 0.8);
-}
-
-.spinning {
-  animation: spinDisk 6s linear infinite;
-}
-  
-</style>
-
-  </main>
-
-  <button id="cart-icon" aria-label="Troli" onclick="toggleCart()">
-    <span class="icon">🛒</span>
-    <span id="cart-badge" class="badge">0</span>
-  </button>
-
-  <aside id="cart-panel" class="cart-panel" aria-live="polite" aria-hidden="true">
-    <div class="cart-header">
-      <h3>Troli Anda</h3>
-      <button class="close-cart" onclick="toggleCart()">✕</button>
-    </div>
-
-    <ul id="cart-items" class="cart-items"></ul>
-
-    <div class="cart-summary">
-      <p id="cart-total">Jumlah: RM 0.00</p>
-    </div>
-  <label for="delivery-method">Penerimaan:</label>
-<select id="delivery-method" onchange="updateCartUI()">
-  <option value="pickup">Pickup</option>
-  <option value="cod">COD (Bergantung Area)</option>
-  <option value="delivery">Delivery (+RM5)</option>
-   <div id="cart-discount" style="color:green;font-size:13px;margin-top:4px;"></div>
-</select>
-     <div id="cart-discount" class="cart-discount"></div>
-<div class="cart-total">Jumlah: <span id="cart-total">RM 0.00</span></div>
-
-<div id="cart-total"></div>
-
-   
-    <div id="checkout-form" class="checkout-form hidden">
-  <label for="orderId">No. Pesanan</label>
-  <input type="text" id="orderId" name="orderId" readonly style="background:#f4f4f4;">
-  
-  <input id="full-name" type="text" placeholder="Nama penuh" />
-  <textarea id="full-address" placeholder="Alamat penuh"></textarea>
-  
-  <button class="btn checkout" onclick="sendOrder()">Hantar Pesanan (WhatsApp)</button>
-    </div>
-
-    <div class="cart-actions">
-      <button class="btn primary" id="open-checkout" onclick="showCheckoutForm()">Teruskan ke Checkout</button>
-    </div>
-    
-   
   </aside>
 
-  <script>
-  // Replace with your WhatsApp number (international format, no + or spaces)
-  const WHATSAPP_NUMBER = '601121243407'; // <-- change this
-
-  const STORAGE_KEY = 'pipah_cart_v1';
-  let cart = []; // array of {id,name,price,qty}
-  let carouselIndex = 0;
-  let carouselInterval = null;
-
-  // init
-  document.addEventListener('DOMContentLoaded', () => {
-    // load cart
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try { cart = JSON.parse(saved) || []; } catch(e){ cart = []; }
-    }
-    // ensure product card qty inputs exist with numeric defaults
-    document.querySelectorAll('.qty-input').forEach(inp => {
-      if (!inp.value || isNaN(inp.value)) inp.value = 1;
-      // min 0 allowed; keep as number string
-      inp.value = Math.max(0, parseInt(inp.value));
-    });
-
-    updateCartUI();
-    document.querySelectorAll('.fade-up').forEach((el,i)=> el.style.animationDelay = (i*80)+'ms');
-    initCarousel('carousel', 3000);
-  });
-
-  /* ---------- Carousel ---------- */
-  function initCarousel(id, intervalMs=3000){
-    const root = document.getElementById(id);
-    if (!root) return;
-    const slidesWrap = root.querySelector('.slides');
-    const slides = slidesWrap.querySelectorAll('.slide');
-    const dotsWrap = document.getElementById('carousel-dots');
-    dotsWrap.innerHTML = '';
-    slides.forEach((_,i) => {
-      const btn = document.createElement('button');
-      btn.addEventListener('click', ()=> showSlide(i, slidesWrap, slides, dotsWrap));
-      dotsWrap.appendChild(btn);
-    });
-    showSlide(0, slidesWrap, slides, dotsWrap);
-    carouselInterval = setInterval(()=> {
-      carouselIndex = (carouselIndex + 1) % slides.length;
-      showSlide(carouselIndex, slidesWrap, slides, dotsWrap);
-    }, intervalMs);
-    // pause on hover
-    root.addEventListener('mouseenter', ()=> clearInterval(carouselInterval));
-    root.addEventListener('mouseleave', ()=> carouselInterval = setInterval(()=> {
-      carouselIndex = (carouselIndex + 1) % slides.length;
-      showSlide(carouselIndex, slidesWrap, slides, dotsWrap);
-    }, intervalMs));
-  }
-  function showSlide(index, slidesWrap, slides, dotsWrap){
-    slidesWrap.style.transform = 'translateX(-'+(index*100)+'%)';
-    carouselIndex = index;
-    Array.from(dotsWrap.children).forEach((d,i)=> d.classList.toggle('active', i===index));
-  }
-
-  /* ---------- Product card qty control ---------- */
-  function changeProductQty(productId, delta){
-    const input = document.getElementById('qty-'+productId);
-    if (!input) return;
-    let v = Math.max(0, parseInt(input.value || '0') + delta);
-    input.value = v;
-  }
-
-   function getTierPriceFromElement(productId, qty) {
-  const productCard = document.getElementById('product-' + productId);
-  if (!productCard) return null;
-
-  const tiers = JSON.parse(productCard.dataset.tiers || '[]');
-  if (!tiers.length) return null;
-
-  let price = tiers[0].price;
-  for (const tier of tiers) {
-    if (qty >= tier.min) price = tier.price;
-  }
-  return price;
-}
-
-function updateTierPrice(productId) {
-  const input = document.getElementById('qty-' + productId);
-  const qty = parseInt(input?.value || '0', 10);
-  const priceEl = document.getElementById('price-' + productId);
-  const newPrice = getTierPriceFromElement(productId, qty);
-  if (newPrice && priceEl) {
-    priceEl.textContent = 'RM' + newPrice;
-  }
-}
-   
-   
-   
-  /* ---------- Add to cart ---------- */
-  function addToCart(id, name, price){
-    const qtyInput = document.getElementById('qty-'+id);
-    const qty = qtyInput ? Math.max(0, parseInt(qtyInput.value || '0')) : 1;
-    if (qty <= 0){
-      alert('Sila pilih kuantiti (lebih 0) sebelum tambah ke troli.');
-      return;
-    }
-    const existing = cart.find(i=>i.id===id);
-    if (existing) existing.qty += qty;
-    else cart.push({id,name,price:Number(price),qty});
-    saveCart();
-    updateCartUI();
-    // bounce icon
-    const icon = document.getElementById('cart-icon');
-    icon.classList.add('added');
-    setTimeout(()=> icon.classList.remove('added'), 480);
-  }
- /* ---------- Tier Postage Config ---------- */
-// Boleh ubah ikut suka. max = maksimum quantity untuk caj tu.
-const postageTiers = [
-  { max: 3, fee: 5 },   // 1-3 item = RM5
-  { max: 6, fee: 8 },   // 4-6 item = RM8
-  { max: 10, fee: 12 }, // 7-10 item = RM12
-  { max: Infinity, fee: 15 } // 11 ke atas = RM15
-];
-
-/* ---------- Update cart UI ---------- */
-function updateCartUI(){
-  const list = document.getElementById('cart-items');
-  const totalEl = document.getElementById('cart-total');
-  const badge = document.getElementById('cart-badge');
-  list.innerHTML = '';
-  let subtotal = 0, count = 0;
-  
-  cart.forEach((item,idx)=>{
-    subtotal += item.price * item.qty;
-    count += item.qty;
-
-    const li = document.createElement('li');
-    // left (name & price)
-    const left = document.createElement('div'); left.style.flex='1';
-    left.innerHTML = `<strong>${escapeHtml(item.name)}</strong><div style="font-size:12px;color:#666">RM ${(item.price * item.qty).toFixed(2)}</div>`;
-    // middle (qty controls)
-    const middle = document.createElement('div');
-    const minus = document.createElement('button'); minus.textContent='−'; minus.onclick = ()=> changeCartQty(idx,-1);
-    const qtySpan = document.createElement('span'); qtySpan.textContent=' '+item.qty+' '; qtySpan.style.fontWeight='700';
-    const plus = document.createElement('button'); plus.textContent='+'; plus.onclick = ()=> changeCartQty(idx,1);
-    middle.appendChild(minus); middle.appendChild(qtySpan); middle.appendChild(plus);
-    // right (remove)
-    const right = document.createElement('div');
-    const rem = document.createElement('button'); rem.textContent='x';
-    rem.style.background='#ff4d4d'; rem.style.color='#fff'; rem.style.border='none'; 
-    rem.style.padding='6px 8px'; rem.style.borderRadius='6px';
-    rem.onclick = ()=> removeCartItem(idx);
-    right.appendChild(rem);
-
-    li.appendChild(left);
-    li.appendChild(middle);
-    li.appendChild(right);
-    list.appendChild(li);
-  });
-
-  // default postage
-  let postage = 0;
-
-  // pilih method penerimaan
-  const method = document.getElementById('delivery-method')?.value || "pickup";
-
-  if(method === "pickup"){ 
-    postage = 0; 
-  }
-  else if(method === "cod"){ 
-    postage = 0; // boleh extend ikut area
-  }
-  else if(method === "delivery"){ 
-    // cari dalam tier config
-    for (let tier of postageTiers){
-      if(count <= tier.max){
-        postage = tier.fee;
-        break;
-      }
-    }
-  }
-
-   // --- Discount calculation by % (based on subtotal) ---
-  let discountPercent = 0;
-  if (subtotal >= 5) discountPercent = 3;
-  else if (subtotal >= 10) discountPercent = 5;
-  else if (subtotal >= 20) discountPercent = 7;
-
-  const discountAmount = (subtotal * discountPercent) / 100;
-  const discountedSubtotal = subtotal - discountAmount;
-   
-  const finalTotal = discountedSubtotal + postage;
-
-  // Update jumlah dengan pecahan + diskaun (jika ada)
-let totalHTML = `
-  <div style="font-size:14px;color:#555">Subtotal: RM ${subtotal.toFixed(2)}</div>
-`;
-
-if (discountPercent > 0) {
-  totalHTML += `
-    <div style="font-size:14px;color:green">
-      Diskaun ${discountPercent}%: -RM ${discountAmount.toFixed(2)}
+  <section class="hero fade-up">
+    <div class="hero-track" id="heroTrack">
+      <div class="hero-slide"><img src="Images/headerrr.png" onerror="this.src='https://placehold.co/800x600/e6ccb2/5a3e1b?text=Fresh+Daily'"></div>
+      <div class="hero-slide"><img src="Images/ss1.jpg" onerror="this.src='https://placehold.co/800x600/bde0fe/5a3e1b?text=Seasalt+Cookies'"></div>
+      <div class="hero-slide"><img src="Images/ch1.jpg" onerror="this.src='https://placehold.co/800x600/ffcdb2/5a3e1b?text=Choc+Hazelnut'"></div>
+      <div class="hero-slide"><img src="Images/br1.jpg" onerror="this.src='https://placehold.co/800x600/a2d2ff/5a3e1b?text=Brownies+Cookies'"></div>
+      <div class="hero-slide"><img src="Images/rv1.jpg" onerror="this.src='https://placehold.co/800x600/ffafcc/5a3e1b?text=Red+Velvet'"></div>
     </div>
-  `;
-}
+    <div class="hero-overlay">
+      <h1 style="font-size:28px; margin-bottom:10px;" id="hero-title">Homemade Rasa Premium</h1>
+      <p style="font-size:14px; opacity:0.9;" id="hero-subtitle">Rasai kebahagiaan dalam setiap gigitan.</p>
+    </div>
+    <div class="hero-dots" id="heroDots">
+      <span class="hero-dot active"></span><span class="hero-dot"></span><span class="hero-dot"></span><span class="hero-dot"></span><span class="hero-dot"></span>
+    </div>
+  </section>
 
-totalHTML += `
-  <div style="font-size:14px;color:#555">Postage: RM ${postage.toFixed(2)} (${method.toUpperCase()})</div>
-  <strong style="font-size:16px">Jumlah: RM ${finalTotal.toFixed(2)}</strong>
-`;
+  <section id="about" class="section fade-up" style="animation-delay: 0.1s;">
+    <div class="profile-section">
+      <img src="Images/icon.png" class="profile-avatar" onerror="this.src='https://placehold.co/200/A67734/fff?text=Miss+PC'">
+      <h3 id="profile-name">Miss PC (Pipah) <span style="color:#3b82f6; font-size:14px;">✔</span></h3>
+      <p style="color:var(--text-muted); line-height:1.6;" id="profile-desc">"Misi saya: Bagi semua orang rasa cookies premium pada harga marhaen."</p>
+    </div>
+  </section>
 
-totalEl.innerHTML = totalHTML;
+  <section id="products" class="section fade-up" style="animation-delay: 0.2s;">
+    <h2 class="section-title">Menu Pilihan</h2>
+    <div class="product-grid">
+      
+      <article class="product-card">
+        <div class="product-slider" onclick="nextProdSlide(this)">
+          <img src="Images/ss1.jpg" class="product-img active" onerror="this.src='https://placehold.co/400x300?text=Seasalt+1'">
+          <img src="Images/ss2.jpg" class="product-img" onerror="this.src='https://placehold.co/400x300?text=Seasalt+2'">
+        </div>
+        <div class="card-body">
+          <h3>Seasalt Cookies (65pcs)</h3>
+          <span class="price">RM16</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="updateQty('p1', -1)">−</button>
+            <input id="qty-p1" class="qty-input" type="number" readonly value="0" min="0">
+            <button class="qty-btn" onclick="updateQty('p1', 1)">+</button>
+          </div>
+          <button class="add-btn" onclick="addToCart('p1','Seasalt Cookies',16)">Tambah Troli</button>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-slider" onclick="nextProdSlide(this)">
+          <img src="Images/ch1.jpg" class="product-img active" onerror="this.src='https://placehold.co/400x300?text=Choc+1'">
+        </div>
+        <div class="card-body">
+          <h3>ChocHazelnut Button</h3>
+          <span class="price">RM22</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="updateQty('p2', -1)">−</button>
+            <input id="qty-p2" class="qty-input" type="number" readonly value="0" min="0">
+            <button class="qty-btn" onclick="updateQty('p2', 1)">+</button>
+          </div>
+          <button class="add-btn" onclick="addToCart('p2','ChocHazelnut Button',22)">Tambah Troli</button>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-slider" onclick="nextProdSlide(this)">
+          <img src="Images/br1.jpg" class="product-img active" onerror="this.src='https://placehold.co/400x300?text=Brownies'">
+        </div>
+        <div class="card-body">
+          <h3>Brownies Cookies</h3>
+          <span class="price">RM17</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="updateQty('p3', -1)">−</button>
+            <input id="qty-p3" class="qty-input" type="number" readonly value="0" min="0">
+            <button class="qty-btn" onclick="updateQty('p3', 1)">+</button>
+          </div>
+          <button class="add-btn" onclick="addToCart('p3','Brownies Cookies',17)">Tambah Troli</button>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-slider" onclick="nextProdSlide(this)">
+          <img src="Images/rv1.jpg" class="product-img active" onerror="this.src='https://placehold.co/400x300?text=RedVelvet'">
+        </div>
+        <div class="card-body">
+          <h3>RedVelvet Button</h3>
+          <span class="price">RM20</span>
+          <div class="qty-control">
+            <button class="qty-btn" onclick="updateQty('p4', -1)">−</button>
+            <input id="qty-p4" class="qty-input" type="number" readonly value="0" min="0">
+            <button class="qty-btn" onclick="updateQty('p4', 1)">+</button>
+          </div>
+          <button class="add-btn" onclick="addToCart('p4','RedVelvet Button',20)">Tambah Troli</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section fade-up">
+    <div class="embed-wrapper" style="height: 500px;">
+        <iframe src="admin.html" title="Admin Panel" onerror="this.style.display='none'"></iframe>
+    </div>
+  </section>
+  <section id="game" class="section fade-up">
+    <h2 class="section-title">Run for Cookie! 🦖</h2>
+    <div class="center-text">
+        <div class="embed-wrapper game-wrapper">
+            <iframe src="game/index.html" title="Dino Game" onerror="this.parentElement.innerHTML='<div style=\'padding:40px;\'>Game file not found.</div>'"></iframe>
+        </div>
+    </div>
+  </section>
+  <section class="section fade-up">
+    <h2 class="section-title">3D Showroom</h2>
+    <div class="embed-wrapper gallery-wrapper">
+        <iframe src="3dGallery.html" title="3D Gallery" onerror="this.style.display='none'"></iframe>
+    </div>
+  </section>
+
+  <section id="testimonials" class="section fade-up">
+    <h2 class="section-title">Apa Kata Mereka?</h2>
+    <div class="testimonial-card">
+      <div class="tst-img-box">
+        <img src="Images/tst1.jpg" class="active" onerror="this.src='https://placehold.co/600x400/ffeef1/555?text=Sedap+Sangat!'">
+        <img src="Images/tst2.jpg" onerror="this.src='https://placehold.co/600x400/ffeef1/555?text=Repeat+Order!'">
+        <img src="Images/tst3.jpg" onerror="this.src='https://placehold.co/600x400/ffeef1/555?text=Premium+Taste'">
+      </div>
+      <div class="tst-content-box">
+        <div class="quote-text">"Founder SK sendiri puji biskut brownies dan seasalt cookies sedapp!"</div>
+        <div class="nav-arrows">
+           <button onclick="changeTestimonial(-1)">‹</button>
+           <button onclick="changeTestimonial(1)">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section fade-up">
+    <h2 class="section-title">Soalan Lazim</h2>
+    <div style="display: grid; gap: 10px; max-width: 800px; margin: 0 auto;">
+        <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="font-weight:600; color:var(--primary);">Penghantaran ke mana?</div>
+            <div style="font-size:14px; color:#666;">Seluruh Malaysia termasuk Sabah & Sarawak.</div>
+        </div>
+    </div>
+  </section>
+
+  <section class="section" style="max-width:800px;">
+    <div style="background:#fff; border-radius:20px; padding:30px; text-align:center;">
+        <h3 style="margin-bottom:20px;">Komen Pelanggan</h3>
+        <form id="commentForm" class="checkout-form">
+            <input type="text" placeholder="Nama anda" required>
+            <textarea placeholder="Tulis review..." required rows="3"></textarea>
+            <button type="button" class="btn-primary" onclick="alert('Terima kasih!')">Hantar Komen</button>
+        </form>
+    </div>
+  </section>
+
+  <div class="center-text" style="padding: 20px; color: #aaa; font-size: 13px;">Visitors: <span id="visitorCount">1,240</span></div>
+  <div style="height: 50px;"></div>
   
+  <a href="https://wa.me/601121243407" class="whatsapp-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="24" height="24" alt="WA">
+    <span>Chat</span>
+  </a>
+  <div class="music-player"><div class="music-disc" id="musicBtn">🎵</div></div>
+  <audio id="bgmusic" loop><source src="Images/music.mp3" type="audio/mpeg"></audio>
+  <button class="fab-cart" onclick="toggleCart()">🛒 <span class="fab-badge" id="cart-badge">0</span></button>
 
-  badge.textContent = count;
-
-  saveCart();
-}
-
-   /* ---------- Change cart qty ---------- */
-  function changeCartQty(index, delta){
-    if (!cart[index]) return;
-    cart[index].qty += delta;
-    if (cart[index].qty <= 0){
-      // remove and reset corresponding product card qty to 0
-      const removed = cart.splice(index,1)[0];
-      const productInput = document.getElementById('qty-'+removed.id);
-      if (productInput) productInput.value = 0;
-    }
-    saveCart();
-    updateCartUI();
-  }
-
-  /* ---------- Remove item ---------- */
-  function removeCartItem(index){
-    if (!cart[index]) return;
-    const removed = cart.splice(index,1)[0];
-    // reset product card qty input to 0 if present
-    const productInput = document.getElementById('qty-'+removed.id);
-    if (productInput) productInput.value = 0;
-    saveCart();
-    updateCartUI();
-  }
-
-  /* ---------- Toggle cart panel (slide) ---------- */
-  function toggleCart(){
-    const panel = document.getElementById('cart-panel');
-    const isShown = panel.classList.contains('show');
-    if (isShown) panel.classList.remove('show'); else panel.classList.add('show');
-    panel.setAttribute('aria-hidden', isShown ? 'true' : 'false');
-  }
-
-  /* ---------- Show checkout form ---------- */
-  function showCheckoutForm(){
-    document.getElementById('checkout-form').classList.remove('hidden');
-    document.getElementById('open-checkout').style.display = 'none';
-    const panel = document.getElementById('cart-panel');
-    panel.scrollTop = panel.scrollHeight;
-  }
-   
-// === AUTO ORDER ID GENERATOR ===
-function formatOrderId(num) {
-  return "PC" + num.toString().padStart(8, "0");
-}
-
-function getNextOrderNumber() {
-  let last = parseInt(localStorage.getItem("orderCounter") || "0", 10);
-  return formatOrderId(last + 1);
-}
-
-function incrementOrderCounter() {
-  let last = parseInt(localStorage.getItem("orderCounter") || "0", 10);
-  localStorage.setItem("orderCounter", (last + 1).toString());
-}
-
-// === SET ORDER NUMBER ON PAGE LOAD ===
-document.addEventListener("DOMContentLoaded", () => {
-  const orderIdInput = document.getElementById("orderId");
-  if (orderIdInput) {
-    orderIdInput.value = getNextOrderNumber();
-    orderIdInput.readOnly = true;
-  }
-});
-   /* ---------- Send order to Invois Page ---------- */
-function sendOrder() {
-  const orderId = document.getElementById("orderId").value;
-  const name = document.getElementById("full-name").value.trim();
-  const phone = document.getElementById("phone")?.value.trim() || "";
-  const address = document.getElementById("full-address").value.trim();
-  const method = document.getElementById("delivery-method")?.value || "pickup";
-
-  if (!name || !address) {
-    alert('Sila isi Nama penuh dan Alamat penuh.');
-    return;
-  }
-  if (!cart || cart.length === 0) {
-    alert('Troli kosong!');
-    return;
-  }
-
-  // --- Kira subtotal & jumlah kuantiti ---
-  let subtotal = 0, qtyTotal = 0;
-  cart.forEach(i => {
-    subtotal += Number(i.price) * Number(i.qty);
-    qtyTotal += Number(i.qty);
-  });
-
-  // --- Kira diskaun berdasarkan subtotal (guna fungsi asal jika ada) ---
-  const discountPercent = typeof calcDiscount === 'function' ? calcDiscount(subtotal) : 
-    (subtotal >= 200 ? 15 : subtotal >= 100 ? 10 : subtotal >= 50 ? 5 : 0);
-
-  const discountAmount = subtotal * (discountPercent / 100);
-  const discountedTotal = subtotal - discountAmount;
-
-  // ---Kira postage ikut pilihan method ---
-  let postage = 0;
-  if (method === "delivery") {
-    const tiers = [
-      { max: 3, fee: 5 },
-      { max: 6, fee: 8 },
-      { max: 999, fee: 12 }
-    ];
-    for (let tier of tiers) {
-      if (qtyTotal <= tier.max) {
-        postage = tier.fee;
-        break;
-      }
-    }
-  }
-
-  const finalTotal = discountedTotal + postage;
-
-  // --- simpan maklumat harga setiap produk selepas diskaun ---
-  const effectiveDiscount = discountPercent / 100;
-  const syncedCart = cart.map(p => {
-    const originalLine = Number(p.price) * Number(p.qty);
-    const discountedLine = originalLine * (1 - effectiveDiscount);
-    return {
-      ...p,
-      title: p.title || p.name || 'Produk',
-      lineSubtotal: Number(originalLine.toFixed(2)),
-      lineDiscount: Number((originalLine - discountedLine).toFixed(2)),
-      lineTotal: Number(discountedLine.toFixed(2))
-    };
-  });
-
-  // --- Simpan ke localStorage untuk invois.html ---
-  const orderInfo = {
-    orderId,
-    date: new Date().toISOString(),
-    buyerName: name,
-    buyerPhone: phone,
-    buyerAddress: address,
-    method,
-    subtotal: Number(subtotal.toFixed(2)),
-    discount: discountPercent,
-    discountAmount: Number(discountAmount.toFixed(2)),
-    postage: Number(postage.toFixed(2)),
-    total: Number(finalTotal.toFixed(2))
-  };
-
-  localStorage.setItem('pipah_cart_v1', JSON.stringify(syncedCart));
-  localStorage.setItem('pipah_order_info', JSON.stringify(orderInfo));
-
-  // --- Redirect ke invois.html ---
-  window.location.href = 'invois.html';
-} 
-/* ---------- Storage helpers ---------- */
-  function saveCart(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
-  function escapeHtml(text){ return String(text).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-
-const music = document.getElementById('bgmusic');
-const btn = document.getElementById('musicBtn');
-const text = document.getElementById('musicText');
-const wrapper = document.getElementById('musicWrapper');
-let isPlaying = false;
-let savedTime = 0;
-let reminderShown = false;
-let lastScrollY = window.scrollY;
-
-
-// 🌸 Show intro text
-function showText() {
-  text.style.opacity = 1;
-  text.style.transform = 'translateX(0)';
-  setTimeout(() => {
-    text.style.opacity = 0;
-    text.style.transform = 'translateX(-25px)';
-  }, 5000);
-}
-
-// 🎨 Detect brightness of background under button
-function detectColorUnderButton() {
-  const underEl = document.elementFromPoint(40, window.innerHeight - 40);
-  if (!underEl) return;
-
-  const bgColor = window.getComputedStyle(underEl).backgroundColor;
-  const rgb = bgColor.match(/\d+/g)?.map(Number);
-  if (!rgb) return;
-
-  const brightness = (rgb[0]*299 + rgb[1]*587 + rgb[2]*114) / 1000;
-  if (brightness > 150) {
-    btn.style.color = '#222';
-    btn.style.borderColor = 'rgba(0,0,0,0.4)';
-    text.style.color = '#222';
-    text.style.textShadow = '0 2px 4px rgba(255,255,255,0.4)';
-  } else {
-    btn.style.color = '#fff';
-    btn.style.borderColor = 'rgba(255,255,255,0.5)';
-    text.style.color = '#fff';
-    text.style.textShadow = '0 2px 6px rgba(0,0,0,0.3)';
-  }
-}
-
-// 🪄 Auto hide on scroll
-function handleScroll() {
-  detectColorUnderButton();
-
-  const currentY = window.scrollY;
-  if (currentY > lastScrollY + 50) {
-    // scroll down → hide
-    wrapper.style.opacity = '0';
-    wrapper.style.transform = 'translateY(30px)';
-  } else if (currentY < lastScrollY - 50) {
-    // scroll up → show
-    wrapper.style.opacity = '1';
-    wrapper.style.transform = 'translateY(0)';
-  }
-  lastScrollY = currentY;
-}
-
-window.addEventListener('load', () => {
-  showText();
-  detectColorUnderButton();
-  music.play().catch(()=>{});
-});
-
-window.addEventListener('scroll', () => {
-  handleScroll();
-  if (!reminderShown && window.scrollY > 100) {
-    showText();
-    reminderShown = true;
-  }
-});
-
-setInterval(detectColorUnderButton, 2000);
-
-// 🎵 Music control
-btn.addEventListener('click', async () => {
-  if (!isPlaying) {
-    music.currentTime = savedTime;
-    music.volume = 0;
-    music.muted = false;
-    try {
-      await music.play();
-    } catch (err) {
-      console.log('Playback error:', err);
-    }
-
-    // Smooth fade-in volume
-    let volume = 0;
-    const fadeInterval = setInterval(() => {
-      if (volume < 1) {
-        volume += 0.05;
-        music.volume = Math.min(volume, 1);
-      } else {
-        clearInterval(fadeInterval);
-      }
-    }, 150);
-
-    isPlaying = true;
-    btn.classList.add('playing', 'spinning');
-  } else {
-    savedTime = music.currentTime;
-    music.pause();
-    isPlaying = false;
-    btn.classList.remove('playing', 'spinning');
-  }
-});
-
-/* --- START GALLERY INTEGRATION HOOK --- */
-window.addEventListener('message', (event) => {
-    // SECURITY NOTE: In a production environment, always check event.origin to ensure
-    // the message came from a trusted source (e.g., your own domain).
-    // For local file testing, we rely on the specific eventType to filter messages.
-
-    const data = event.data;
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <aside class="cart-panel" id="cart-panel">
+    <div style="width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 15px;"></div>
+    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+        <h2 style="font-size:18px;">Troli Anda</h2>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px;">✕</button>
+    </div>
     
-    // 1. Handle Add to Cart Event from Gallery (gallery:addToCart)
-    if (data && data.eventType === 'gallery:addToCart') {
-        const detail = data.detail;
-        
-        console.log('Gallery Add to Cart Signal Received:', detail);
+    <div class="cart-items-scroll">
+        <ul id="cart-items" style="list-style:none; padding:0;"></ul>
+    </div>
 
-        const galleryProductId = 'gallery_p_' + detail.productId;
-        const galleryProductName = 'Gallery: ' + detail.productName;
-        const galleryProductPrice = detail.productPrice;
-        const galleryQuantity = detail.quantity; // Should be 1
-
-        // Use the existing global 'cart' array and functions
-        const existing = cart.find(i=>i.id===galleryProductId);
+    <div style="border-top: 1px solid #eee; padding-top: 15px;" class="checkout-form">
+        <label style="font-size:13px; font-weight:600; color:#555;">Pilihan Penghantaran:</label>
+        <select id="delivery-method" onchange="saveAndRender()">
+            <option value="pickup">Self Pickup (Percuma)</option>
+            <option value="delivery">Pos Laju (Ikut Kuantiti)</option>
+        </select>
         
-        if (existing) {
-            existing.qty += galleryQuantity;
-        } else {
-            // Add a new product to the main cart
-            cart.push({
-                id: galleryProductId,
-                name: galleryProductName,
-                price: Number(galleryProductPrice),
-                qty: galleryQuantity
-            });
+        <div id="cart-summary" style="margin-bottom:15px; text-align:right; font-size:14px; line-height:1.6;">
+            </div>
+
+        <button id="btn-checkout-view" class="btn-primary" onclick="showCheckoutFields()">Checkout</button>
+        
+        <div id="checkout-fields" class="hidden checkout-form" style="margin-top:10px;">
+            <input type="text" id="full-name" placeholder="Nama Penuh">
+            <textarea id="full-address" placeholder="Alamat Penuh" rows="2"></textarea>
+            <button class="btn-primary" style="background:#25D366;" onclick="sendOrder()">Hantar WhatsApp</button>
+        </div>
+    </div>
+  </aside>
+
+  <nav class="mobile-bottom-nav">
+    <button class="nav-item active" onclick="window.scrollTo(0,0)"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-item" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🍪</span><span>Menu</span></button>
+    <button class="nav-item" onclick="document.getElementById('game').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🦖</span><span>Game</span></button>
+    <button class="nav-item" onclick="toggleCart()"><span class="nav-icon">🛍️</span><span>Cart</span></button>
+  </nav>
+
+  <script>
+    function toggleSidebar() {
+        document.getElementById('sidebar-panel').classList.toggle('open');
+        document.getElementById('sidebar-overlay').classList.toggle('open');
+    }
+
+    // --- CONFIG LOADING ---
+    // Load config from Control Panel storage
+    function loadSiteConfig() {
+        const saved = localStorage.getItem('pipah_site_config');
+        if (saved) {
+            const config = JSON.parse(saved);
+            
+            // Apply Colors
+            if(config.primaryColor) document.documentElement.style.setProperty('--primary', config.primaryColor);
+            if(config.bgColor) document.documentElement.style.setProperty('--bg-color', config.bgColor);
+            
+            // Apply Texts
+            if(config.heroTitle) {
+                const el = document.getElementById('hero-title');
+                if(el) el.innerText = config.heroTitle;
+            }
+            if(config.heroSubtitle) {
+                const el = document.getElementById('hero-subtitle');
+                if(el) el.innerText = config.heroSubtitle;
+            }
+            if(config.profileName) {
+                const el = document.getElementById('profile-name');
+                if(el) el.innerText = config.profileName;
+            }
+            if(config.profileDesc) {
+                const el = document.getElementById('profile-desc');
+                if(el) el.innerText = config.profileDesc;
+            }
         }
+    }
+    // Run config load immediately
+    loadSiteConfig();
+
+
+    // Hero Slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const track = document.getElementById('heroTrack');
+    const dots = document.querySelectorAll('.hero-dot');
+    const totalSlides = slides.length;
+    function updateSlider() {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        dots.forEach((dot, index) => dot.classList.toggle('active', index === currentSlide));
+    }
+    setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides; updateSlider(); }, 4000);
+
+    // Testimonial
+    const tstImgs = document.querySelectorAll('.tst-img-box img');
+    const tstQuotes = ["Founder SK sendiri puji!", "Repeat order lagi!", "Rasa premium, harga berbaloi."];
+    let tstIdx = 0;
+    window.changeTestimonial = function(dir) {
+        tstImgs[tstIdx].classList.remove('active');
+        tstIdx = (tstIdx + dir + tstImgs.length) % tstImgs.length;
+        tstImgs[tstIdx].classList.add('active');
+        document.querySelector('.quote-text').innerText = `"${tstQuotes[tstIdx]}"`;
+    }
+
+    // Product & Cart Logic
+    let cart = JSON.parse(localStorage.getItem('pipah_cart_v2') || "[]");
+
+    window.updateQty = function(id, delta) {
+        const el = document.getElementById('qty-' + id);
+        if(!el) return;
+        let val = parseInt(el.value) || 0;
+        val = Math.max(0, val + delta); // Allow 0
+        el.value = val;
+    }
+
+    window.addToCart = function(id, name, price) {
+        const qtyEl = document.getElementById('qty-' + id);
+        const qty = parseInt(qtyEl.value) || 0;
         
-        // Update the UI and storage using existing main page functions
-        saveCart();
-        updateCartUI();
+        if (qty === 0) {
+            alert("Sila masukkan kuantiti dahulu (Tekan butang +)");
+            return;
+        }
+
+        const existing = cart.find(x => x.id === id);
+        if(existing) existing.qty += qty; else cart.push({ id, name, price, qty });
         
-        // Add visual confirmation (bounce icon)
-        const icon = document.getElementById('cart-icon');
-        icon.classList.add('added');
-        setTimeout(()=> icon.classList.remove('added'), 480);
+        saveAndRender();
+        const btn = document.querySelector('.fab-cart');
+        btn.style.transform = "scale(1.2)"; setTimeout(()=> btn.style.transform = "scale(1)", 200);
+        qtyEl.value = 0; // Reset to 0
     }
-    
-    // 2. Handle Iframe Height Resize Event from Gallery
-    if (data.galleryHeight) {
-      const iframe = document.getElementById('galleryIframe');
-      // Set the height of the iframe to the height reported by the gallery content
-      if(iframe) iframe.style.height = data.galleryHeight + 'px';
+
+    window.toggleCart = function() {
+        document.getElementById('cart-panel').classList.toggle('open');
+        document.getElementById('cart-overlay').classList.toggle('open');
     }
-});
-/* --- END GALLERY INTEGRATION HOOK --- */
 
-</script>
-   <script>
-document.querySelectorAll('.product-slider').forEach(slider => {
-  const imgs = slider.querySelectorAll('.product-img');
-  const dots = slider.querySelectorAll('.dot');
-  let index = 0;
+    window.saveAndRender = function() {
+        localStorage.setItem('pipah_cart_v2', JSON.stringify(cart));
+        const list = document.getElementById('cart-items');
+        const summaryEl = document.getElementById('cart-summary');
+        const badge = document.getElementById('cart-badge');
+        
+        list.innerHTML = '';
+        let subtotal = 0, count = 0;
 
-  function showSlide(i) {
-    imgs.forEach(img => img.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
-    imgs[i].classList.add('active');
-    dots[i].classList.add('active');
-  }
+        cart.forEach((item, idx) => {
+            subtotal += item.price * item.qty;
+            count += item.qty;
+            list.innerHTML += `
+                <li style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+                    <div><b>${item.name}</b><br><small>RM${item.price} x ${item.qty}</small></div>
+                    <div style="text-align:right;">RM${(item.price * item.qty).toFixed(2)}<br><span style="color:red; cursor:pointer;" onclick="removeItem(${idx})">Buang</span></div>
+                </li>`;
+        });
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      index = i;
-      showSlide(index);
+        // Postage Logic
+        const method = document.getElementById('delivery-method').value;
+        let postage = 0;
+        if(method === 'delivery' && count > 0) {
+            if(count <= 3) postage = 5;
+            else if(count <= 6) postage = 8;
+            else postage = 15;
+        }
+
+        // --- Discount calculation by % (Corrected Order) ---
+        let discountPercent = 0;
+        if (subtotal >= 20) discountPercent = 7;      // Highest check first
+        else if (subtotal >= 10) discountPercent = 5;
+        else if (subtotal >= 5) discountPercent = 3;
+
+        const discountAmount = (subtotal * discountPercent) / 100;
+        const discountedSubtotal = subtotal - discountAmount;
+        
+        const finalTotal = discountedSubtotal + postage;
+
+        // Update HTML
+        let totalHTML = `
+          <div style="font-size:14px;color:#555">Subtotal: RM ${subtotal.toFixed(2)}</div>
+        `;
+
+        if (discountPercent > 0) {
+          totalHTML += `
+            <div style="font-size:14px;color:green">
+              Diskaun ${discountPercent}%: -RM ${discountAmount.toFixed(2)}
+            </div>
+          `;
+        }
+
+        totalHTML += `
+          <div style="font-size:14px;color:#555">Postage: RM ${postage.toFixed(2)} (${method.toUpperCase()})</div>
+          <strong style="font-size:16px; color:var(--primary);">Jumlah: RM ${finalTotal.toFixed(2)}</strong>
+        `;
+
+        summaryEl.innerHTML = totalHTML;
+        badge.textContent = count;
+        
+        if(cart.length === 0) list.innerHTML = '<li style="text-align:center; color:#999; padding:20px;">Troli kosong</li>';
+    }
+
+    window.removeItem = function(idx) { cart.splice(idx, 1); saveAndRender(); }
+    window.showCheckoutFields = function() {
+        if(cart.length === 0) return alert("Pilih biskut dulu!");
+        document.getElementById('checkout-fields').classList.remove('hidden');
+        document.getElementById('btn-checkout-view').classList.add('hidden');
+    }
+
+    window.sendOrder = function() {
+        const name = document.getElementById('full-name').value;
+        const address = document.getElementById('full-address').value;
+        // Strip HTML tags for cleaner whatsapp text if needed, but innerText handles it well
+        const total = document.getElementById('cart-summary').innerText.replace(/\n/g, '\n'); 
+        
+        if(!name || !address) return alert("Sila isi Nama & Alamat");
+        
+        let msg = `Hai Miss PC! Saya nak order:\nName: ${name}\nAlamat: ${address}\n\n`;
+        cart.forEach(c => msg += `- ${c.name} (${c.qty} unit)\n`);
+        msg += `\n----------------\n${total}`;
+        
+        window.open(`https://wa.me/601121243407?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Music
+    const musicBtn = document.getElementById('musicBtn');
+    const audio = document.getElementById('bgmusic');
+    let playing = false;
+    musicBtn.addEventListener('click', () => {
+        playing ? audio.pause() : audio.play().catch(()=>alert("Tap page first"));
+        playing = !playing;
+        musicBtn.style.animation = playing ? "spin 4s linear infinite" : "none";
+        musicBtn.style.borderColor = playing ? "gold" : "white";
     });
-  });
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = "@keyframes spin { 100% { transform: rotate(360deg); } }";
+    document.head.appendChild(styleSheet);
 
-  // Auto-slide every 3 seconds
-  setInterval(() => {
-    index = (index + 1) % imgs.length;
-    showSlide(index);
-  }, 3000);
-});
-</script>
- <script>
-    const images = document.querySelectorAll(".testimonial-gallery img");
-    const quotes = document.querySelectorAll(".quote");
-    const bg = document.querySelector(".testimonial-bg");
-    const dotsContainer = document.querySelector(".dots");
-    const prevBtn = document.getElementById("prev");
-    const nextBtn = document.getElementById("next");
-    const section = document.querySelector(".testimonial-section");
-
-    let index = 0;
-    let interval;
-    let startX = 0;
-    let endX = 0;
-
-    // Create dots
-    images.forEach((_, i) => {
-      const dot = document.createElement("button");
-      dot.addEventListener("click", () => showImage(i));
-      dotsContainer.appendChild(dot);
-    });
-    const dots = dotsContainer.querySelectorAll("button");
-
-    function showImage(i) {
-      images.forEach((img, n) => img.classList.toggle("active", n === i));
-      quotes.forEach((q, n) => q.classList.toggle("active", n === i));
-      dots.forEach((dot, n) => dot.classList.toggle("active", n === i));
-      bg.style.backgroundImage = `url(${images[i].src})`;
-      index = i;
-    }
-
-    function next() {
-      index = (index + 1) % images.length;
-      showImage(index);
-    }
-
-    function prev() {
-      index = (index - 1 + images.length) % images.length;
-      showImage(index);
-    }
-
-    nextBtn.addEventListener("click", next);
-    prevBtn.addEventListener("click", prev);
-
-    // Auto slide
-    function startAuto() {
-      interval = setInterval(next, 4000);
-    }
-    function stopAuto() {
-      clearInterval(interval);
-    }
-
-    section.addEventListener("mouseenter", stopAuto);
-    section.addEventListener("mouseleave", startAuto);
-
-    // Mobile swipe
-    section.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-    });
-    section.addEventListener("touchend", (e) => {
-      endX = e.changedTouches[0].clientX;
-      const diff = startX - endX;
-      if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
-    });
-
-    // Initialize
-    showImage(index);
-    startAuto();
- </script>
- <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log('✅ Service Worker Registered'))
-    .catch(err => console.error('❌ Service Worker Failed', err));
-}
- </script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyB1zNzsKmXXLVsOVGnVeGwlT_0uX3XqdO0",
-  authDomain: "pipahcookies-order.firebaseapp.com",
-  databaseURL: "https://pipahcookies-order-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "pipahcookies-order",
-  storageBucket: "pipahcookies-order.firebasestorage.app",
-  messagingSenderId: "1038900448087",
-  appId: "1:1038900448087:web:a46586f21e9ae989708c12"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// update counters
-async function updateCounters() {
-  const totalRef = db.ref("visitors/total");
-  const uniqueRef = db.ref("visitors/unique");
-
-  // increase total every visit
-  totalRef.transaction(count => (count || 0) + 1);
-
-  // count unique per device/browser
-  if (!localStorage.getItem("pipahcookies_visited")) {
-    uniqueRef.transaction(count => (count || 0) + 1);
-    localStorage.setItem("pipahcookies_visited", "true");
-  }
-
-  // live update display
-totalRef.on("value", snap => {
-  const el = document.getElementById("visitorCount");
-  if (el) el.textContent = snap.val() || 0;
-});
-
-uniqueRef.on("value", snap => {
-  const el = document.getElementById("uniqueCount");
-  if (el) el.textContent = snap.val() || 0;
-});
- }
-
-updateCounters();
-</script>
-
-<div style="text-align:center;margin-top:20px;font-family:sans-serif;">
-  🍪 Visitors: <span id="visitorCount">0</span><br>
-  🌍 Visitors International: <span id="uniqueCount">0</span>
-</div>
- <style>
-#pipahInstallPopup {
-  position: fixed;
-  bottom: -70px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255,248,242,0.92);
-  border: 1.5px solid var(--primary,#A67734);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  padding: 8px 18px;
-  font-family: "Poppins",sans-serif;
-  text-align: center;
-  z-index: 9999;
-  display: none;
-  transition: bottom .4s ease, opacity .4s ease;
-  opacity: 0;
-}
-#pipahInstallPopup.show {
-  display: block;
-  bottom: 20px;
-  opacity: 1;
-}
-#pipahInstallPopup p {
-  color: var(--primary,#A67734);
-  font-weight: 600;
-  margin: 0;
-  cursor: pointer;
-}
-#pipahInstallPopup .closeBtn {
-  position: absolute;
-  top: 2px;
-  right: 8px;
-  font-size: 16px;
-  color: #666;
-  cursor: pointer;
-}
-</style>
-
-<div id="pipahInstallPopup">
-  <span class="closeBtn" onclick="closePipahPopup()">×</span>
-  <p id="pipahInstallText"></p>
-</div>
-
-<script>
-let deferredPrompt = null;
-let installReady = false;
-let isInstalled = false;
-
-// ✅ Detect if app already installed
-window.addEventListener("appinstalled", () => {
-  isInstalled = true;
-  localStorage.setItem("pipahInstalled", "true");
-  closePipahPopup();
-});
-if (window.matchMedia('(display-mode: standalone)').matches || localStorage.getItem("pipahInstalled") === "true") {
-  isInstalled = true;
-}
-
-// ✅ Catch browser install prompt
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installReady = true;
-});
-
-// ✅ Update popup text based on device & availability
-function updateInstallText() {
-  const text = document.getElementById("pipahInstallText");
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-
-  if (isIOS) {
-    text.textContent = "Add to Homescreen ⬇️";
-    text.onclick = null;
-  } else if (installReady && deferredPrompt) {
-    text.textContent = "Install PipahCookies now";
-    text.onclick = async () => {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") {
-        console.log("PWA Installed!");
-        localStorage.setItem("pipahInstalled", "true");
-      }
-      deferredPrompt = null;
-      closePipahPopup();
-    };
-  } else {
-    text.textContent = "Install PipahCookies now";
-    text.onclick = () => alert("Use Chrome, Edge, or Brave to install PipahCookies.");
-  }
-}
-
-// ✅ Show popup after 5 seconds if not installed
-window.addEventListener("load", () => {
-  if (!isInstalled) {
-    setTimeout(() => {
-      const popup = document.getElementById("pipahInstallPopup");
-      updateInstallText();
-      popup.style.display = "block";
-      setTimeout(() => popup.classList.add("show"), 50);
-    }, 5000);
-  }
-});
-
-// ✅ Close button function
-function closePipahPopup() {
-  const popup = document.getElementById("pipahInstallPopup");
-  popup.classList.remove("show");
-  setTimeout(() => popup.style.display = "none", 400);
-}
-</script>
-
-<style>
-  #footerInstallBtn {
-    background: var(--primary, #A67734);
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    padding: 10px 22px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    display: none; /* hidden until prompt available */
-    margin-top: 12px;
-  }
-  #footerInstallBtn:hover {
-    background: var(--primary-dark, #8b5e2b);
-    transform: translateY(-2px);
-  }
-
-  /* iOS hint popup */
-  #iosHintPopup {
-    position: fixed;
-    left: 50%;
-    bottom: -100px;
-    transform: translateX(-50%);
-    background: rgba(255, 248, 242, 0.96);
-    color: var(--primary, #A67734);
-    font-family: "Poppins", sans-serif;
-    padding: 14px 22px;
-    border-radius: 18px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    font-weight: 600;
-    opacity: 0;
-    transition: bottom 0.6s ease, opacity 0.6s ease;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  #iosHintPopup.show {
-    bottom: 35px;
-    opacity: 1;
-  }
-
-  #iosHintPopup .closeBtn {
-    background: none;
-    border: none;
-    color: var(--primary-dark, #8b5e2b);
-    font-size: 18px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 6px;
-  }
-  #iosHintPopup .closeBtn:hover {
-    color: #c56a23;
-  }
-</style>
-
-<footer id="installAppSection" style="text-align:center; padding:20px 0;">
-  <button id="footerInstallBtn">Install app PipahCookies sekarang 🍪</button>
-</footer>
-
-<div id="iosHintPopup">
-  <span>Add to Homescreen now 📱</span>
-  <button class="closeBtn" aria-label="Close">×</button>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const installBtn = document.getElementById("footerInstallBtn");
-  const iosPopup = document.getElementById("iosHintPopup");
-  const closeBtn = iosPopup.querySelector(".closeBtn");
-
-  if (!installBtn) return; // Prevents null errors
-
-  let deferredPrompt = null;
-  const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent.toLowerCase());
-  const isInStandaloneMode = "standalone" in window.navigator && window.navigator.standalone;
-
-  // ✅ Handle beforeinstallprompt (Android/Chrome)
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display = "inline-block";
-  });
-
-  // ✅ Install button click
-  installBtn.addEventListener("click", async () => {
-    if (isIOS) {
-      showIOSHint();
-    } else if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") console.log("✅ PWA installed!");
-      deferredPrompt = null;
-    } else {
-      alert("Please use Chrome, Edge, or Brave to install PipahCookies app.");
-    }
-  });
-
-  // ✅ Auto-hide button if already installed
-  if (isInStandaloneMode || window.matchMedia("(display-mode: standalone)").matches) {
-    installBtn.style.display = "none";
-  }
-
-  // ✅ Auto-show iOS hint if not installed
-  window.addEventListener("load", () => {
-    if (isIOS && !isInStandaloneMode) {
-      setTimeout(showIOSHint, 2500);
-    }
-
-    // If URL has #installapp, scroll to install section
-    if (window.location.hash === "#installapp") {
-      document
-        .getElementById("installAppSection")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  });
-
-  // ✅ iOS Hint Popup Control
-  function showIOSHint() {
-    iosPopup.classList.add("show");
-    clearTimeout(showIOSHint.hideTimeout);
-    showIOSHint.hideTimeout = setTimeout(() => {
-      iosPopup.classList.remove("show");
-    }, 6000);
-  }
-
-  closeBtn.addEventListener("click", () => iosPopup.classList.remove("show"));
-});
-</script>
- <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then(() => console.log('Service Worker registered successfully'))
-      .catch(err => console.log('SW registration failed:', err));
-  }
- </script>
- <script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
-3.  That's it! The new `products.js` (which I provided above) will automatically take over, clear your hardcoded HTML grid, and fill it with the live data you edit in the Control Panel.
-
+    saveAndRender();
+  </script>
 </body>
 </html>
+
