@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Cookie Dino Run 🍪</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to top, #f5e4c3, #ffe8c6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  canvas {
+    background: #fffaf0;
+    border: 3px solid #d2b48c;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    width: 95vw;
+    max-width: 700px;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="700" height="300"></canvas>
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// 🌤️ Cloud data
+let clouds = [
+  { x: 100, y: 40, size: 40, speed: 0.2 },
+  { x: 400, y: 60, size: 50, speed: 0.15 },
+  { x: 600, y: 30, size: 35, speed: 0.25 }
+];
+
+// 🦖 Dino & game elements
+const dinoImg = new Image();
+const cactusImg = new Image();
+const cookieImgs = ["cookie1.png","cookie2.png","cookie3.png","cookie4.png"];
+dinoImg.src = "dino.png";
+cactusImg.src = "cactus.png";
+
+let dino = { 
+  x: 50, 
+  y: 220, 
+  width: 45, 
+  height: 45, 
+  vy: 0, 
+  gravity: 0.6, 
+  jumpPower: -10, 
+  isJumping: false 
+};
+
+let cactus = { x: 700, y: 240, width: 30, height: 50 };
+let cookie = { x: 900, y: 150, width: 30, height: 30, img: new Image() };
+cookie.img.src = cookieImgs[Math.floor(Math.random() * cookieImgs.length)];
+
+let speed = 6;
+let score = 0;
+let highScore = localStorage.getItem("cookieDinoHigh") || 0;
+let gameOver = false;
+
+// Jump
+function jump() {
+  if (!dino.isJumping && !gameOver) {
+    dino.vy = dino.jumpPower;
+    dino.isJumping = true;
+  } else if (gameOver) resetGame();
+}
+
+function resetGame() {
+  dino.y = 220;
+  dino.vy = 0;
+  cactus.x = 700;
+  cookie.x = 900;
+  score = 0;
+  speed = 3;
+  gameOver = false;
+  loop();
+}
+
+function update() {
+  if (gameOver) return;
+
+  // Clouds move
+  clouds.forEach(cloud => {
+    cloud.x -= cloud.speed;
+    if (cloud.x + cloud.size < 0) {
+      cloud.x = canvas.width + Math.random() * 100;
+      cloud.y = 20 + Math.random() * 60;
+      cloud.size = 30 + Math.random() * 40;
+    }
+  });
+
+  // Dino movement
+  dino.y += dino.vy;
+  dino.vy += dino.gravity;
+  if (dino.y >= 220) {
+    dino.y = 220;
+    dino.isJumping = false;
+  }
+
+  cactus.x -= speed;
+  cookie.x -= speed;
+
+  if (cactus.x < -50) {
+    // Make the cactus appear faster and more unpredictable at higher score
+    let range = 300 + Math.floor(score / 50) * 20; // increases with score
+    cactus.x = 700 + Math.random() * range;
+}
+  if (cookie.x < -50) {
+    cookie.x = 800 + Math.random() * 400;
+    cookie.y = 130 + Math.random() * 40;
+    cookie.img.src = cookieImgs[Math.floor(Math.random() * cookieImgs.length)];
+  }
+    // Score and difficulty
+score += 0.1;
+
+// Increase speed gradually
+speed = 6 + Math.floor(score / 100); // starts at 6, +1 every 100 points
+
+   // Collision - cactus
+  if (dino.x < cactus.x + cactus.width &&
+      dino.x + dino.width > cactus.x &&
+      dino.y < cactus.y + cactus.height &&
+      dino.y + dino.height > cactus.y) {
+    gameOver = true;
+    if (score > highScore) {
+      highScore = Math.floor(score);
+      localStorage.setItem("cookieDinoHigh", highScore);
+    }
+  }
+
+  // Collision - cookie
+  if (dino.x < cookie.x + cookie.width &&
+      dino.x + dino.width > cookie.x &&
+      dino.y < cookie.y + cookie.height &&
+      dino.y + dino.height > cookie.y) {
+    score += 20;
+    cookie.x = 800 + Math.random() * 400;
+    cookie.y = 130 + Math.random() * 40;
+    cookie.img.src = cookieImgs[Math.floor(Math.random() * cookieImgs.length)];
+  }
+}
+
+function drawCloud(x, y, size) {
+  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.beginPath();
+  ctx.ellipse(x, y, size * 0.8, size * 0.5, 0, 0, Math.PI * 2);
+  ctx.ellipse(x + size * 0.6, y + 5, size * 0.6, size * 0.4, 0, 0, Math.PI * 2);
+  ctx.ellipse(x - size * 0.6, y + 10, size * 0.7, size * 0.4, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // ☁️ Clouds
+  clouds.forEach(cloud => drawCloud(cloud.x, cloud.y, cloud.size));
+
+  // Ground
+  ctx.fillStyle = "#d2b48c";
+  ctx.fillRect(0, 270, canvas.width, 4);
+
+  // Objects
+  ctx.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
+  ctx.drawImage(cactusImg, cactus.x, cactus.y, cactus.width, cactus.height);
+  ctx.drawImage(cookie.img, cookie.x, cookie.y, cookie.width, cookie.height);
+
+  // Scores
+  ctx.fillStyle = "#5a3e1b";
+  ctx.font = "18px Poppins";
+  ctx.fillText(`Score: ${Math.floor(score)}`, 20, 30);
+  ctx.fillText(`High: ${highScore}`, 600, 30);
+
+  // Game Over screen
+  if (gameOver) {
+    ctx.fillStyle = "rgba(255,255,255,0.8)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "#5a3e1b";
+    ctx.font = "28px Poppins";
+    ctx.fillText("🍪 Game Over 🍪", 250, 130);
+    ctx.font = "20px Poppins";
+    ctx.fillText("Tap or Click to Play Again", 230, 170);
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  if (!gameOver) requestAnimationFrame(loop);
+}
+
+canvas.addEventListener("click", jump);
+canvas.addEventListener("touchstart", jump);
+loop();
+</script>
+  
+</body>
+</html>
