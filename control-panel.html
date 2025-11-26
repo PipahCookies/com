@@ -507,26 +507,42 @@
 
     function closeModal() { document.getElementById('productModal').style.display = 'none'; }
 
-    async function submitProduct() {
+        async function submitProduct() {
         const btn = document.getElementById('btn-save');
-        btn.disabled = true; document.getElementById('btn-text').innerText = "Uploading...";
+        const btnText = document.getElementById('btn-text');
+        
+        btn.disabled = true; 
+        btnText.innerText = "Uploading...";
 
         const id = document.getElementById('edit-id').value || 'p' + Date.now();
         const name = document.getElementById('edit-name').value;
         const price = document.getElementById('edit-price').value;
         
-        // Handle Images
+        // Input validation
+        if (!name || !price) {
+            showToast("Error: Name and Price are required.");
+            btn.disabled = false; btnText.innerText = "Save Changes";
+            return;
+        }
+
         let imageUrls = [];
         
-        // Loop through 3 slots
+        // Handle Images: Convert files to Base64 and include existing URLs
         for(let i=1; i<=3; i++) {
             const fileInput = document.getElementById('edit-file'+i);
             const existing = document.getElementById('existing-img'+i).value;
             
             if(fileInput.files.length > 0) {
                 // Convert new file to Base64
-                const b64 = await toBase64(fileInput.files[0]);
-                imageUrls.push(b64);
+                try {
+                    const b64 = await toBase64(fileInput.files[0]);
+                    imageUrls.push(b64);
+                } catch(e) {
+                    showToast("Error processing file.");
+                    btn.disabled = false; btnText.innerText = "Save Changes";
+                    console.error("File processing error:", e);
+                    return;
+                }
             } else if (existing) {
                 imageUrls.push(existing);
             } else {
@@ -536,18 +552,41 @@
 
         const payload = { id, name, price, images: imageUrls };
 
-        // Send to Replit
-        await fetch(`${API_URL}/api/products`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(payload)
-        });
+        try {
+            // Send to Replit
+            const response = await fetch(`${API_URL}/api/products`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
 
-        btn.disabled = false; document.getElementById('btn-text').innerText = "Save Changes";
-        closeModal();
-        loadDataFromBackend(); // Refresh
-        showToast("Product Saved!");
-    }
+            if (!response.ok) {
+                // If the server responded with an error (e.g., 500)
+                const errorText = await response.text();
+                throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+            }
+
+            // Success path
+            closeModal();
+            // Clear file inputs after successful upload
+            for(let i=1; i<=3; i++) {
+                document.getElementById('edit-file'+i).value = '';
+                document.getElementById('existing-img'+i).value = '';
+            }
+            loadDataFromBackend(); // Refresh
+            showToast("Product Saved!");
+            
+        } catch (e) {
+            // Network error or server error
+            console.error("Product upload failed:", e);
+            showToast("Upload Failed! Check console for errors. (Hint: Server might be down or image too large)");
+        }
+        
+        // Always reset button state
+        btn.disabled = false; 
+        btnText.innerText = "Save Changes";
+   }
+          
 
     function showToast(msg) {
         const t = document.getElementById('toast');
