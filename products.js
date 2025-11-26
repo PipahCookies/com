@@ -1,31 +1,3 @@
-/**
- * products.js - REWRITTEN FOR DYNAMIC CONTENT
- * This file now acts as a bridge between Firestore and your index.html/admin.html.
- * It automatically fetches data set in control_panel.html.
- */
-
-// Initialize Firebase (Using the same config as control panel)
-const firebaseConfig = {
-  apiKey: "AIzaSyB1zNzsKmXXLVsOVGnVeGwlT_0uX3XqdO0",
-  authDomain: "pipahcookies-order.firebaseapp.com",
-  databaseURL: "https://pipahcookies-order-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "pipahcookies-order",
-  storageBucket: "pipahcookies-order.firebasestorage.app",
-  messagingSenderId: "1038900448087",
-  appId: "1:1038900448087:web:a46586f21e9ae989708c12"
-};
-
-// Check if Firebase is loaded, if not, wait for it or alert
-if (typeof firebase === 'undefined') {
-  console.error("Firebase SDK not found. Please add Firebase scripts to index.html header.");
-} else {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-}
-
-const db = firebase.firestore();
-const auth = firebase.auth();
 
 // Global variable to store products so other scripts can access it (like admin.html)
 var products = []; 
