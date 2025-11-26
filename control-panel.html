@@ -550,52 +550,6 @@
             showToast("Connection Error during delete");
         }
     }
-
-    // --- STANDARD PRODUCT ACTIONS (With Fallback Delete) ---
-    async function deleteProduct(id) {
-        if(!confirm("Are you sure you want to delete this product?")) return;
-        
-        if(IS_DEMO) {
-            products = products.filter(p => p.id !== id);
-            renderProducts();
-            showToast("Product Removed! (Demo Mode)");
-            return;
-        }
-
-        // Attempt 1: Standard DELETE request
-        try {
-            const res = await fetch(`${API_URL}/api/products/${id}`, { 
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            
-            if (res.ok) {
-                 await loadDataFromBackend(); 
-                 showToast("Product Deleted!");
-                 return;
-            }
-        } catch(e) { console.warn("Standard DELETE failed, trying fallback..."); }
-
-        // Attempt 2: Fallback POST request (for servers that block DELETE)
-        try {
-            const res = await fetch(`${API_URL}/api/products/delete`, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: id })
-            });
-
-            if (res.ok) {
-                 await loadDataFromBackend(); 
-                 showToast("Product Deleted!");
-            } else {
-                 const text = await res.text();
-                 console.error("Delete failed:", text);
-                 showToast(`Error ${res.status}: Server refused delete.`);
-            }
-        } catch(e) {
-            showToast("Connection Error during delete.");
-        }
-    }
     
     // ... (Existing Functions for Settings, Product Submit, Orders, Utils kept same) ...
     function applySettings(s) {
@@ -624,14 +578,15 @@
         products.forEach(p => {
             const img = p.images && p.images[0] ? p.images[0] : '';
             const mediaHTML = img ? `<img src="${img}" style="width:100%; height:120px; object-fit:cover; border-radius:8px;">` : `<div style="height:120px; background:#eee;"></div>`;
+            
+            // REMOVED DELETE BUTTON HERE
             list.innerHTML += `
                 <div class="card">
                     ${mediaHTML}
                     <h4 style="margin:10px 0 5px;">${p.name}</h4>
                     <span class="status-badge">RM ${p.price}</span>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button class="btn" style="background:#f0f0f0; flex:1;" onclick="editProduct('${p.id}')">Edit</button>
-                        <button class="btn btn-danger" style="flex:1;" onclick="deleteProduct('${p.id}')">Delete</button>
+                    <div style="margin-top:10px;">
+                        <button class="btn" style="background:#f0f0f0; width:100%;" onclick="editProduct('${p.id}')">Edit</button>
                     </div>
                 </div>`;
         });
