@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PipahCookies Elegant 3D Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* --- THEME COLORS --- */
+:root {
+  --color-primary: #5a4f3c; /* Deep Brown Text */
+  --color-secondary: #A67734; /* Cookie Orange/Highlight */
+  --color-background: #f7f3ee; /* Soft Beige */
+  --color-card-bg: rgba(255, 255, 255, 0.7); /* Transparent Card */
+}
+
+/* --- GENERAL & LAYOUT --- */
+body {
+  margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center;
+  background: var(--color-background); font-family: 'Poppins', sans-serif;
+  color: var(--color-primary); width: 100%;
+}
+
+.gallery-wrapper {
+  text-align: center; max-width: 1200px; position: relative; 
+  padding: 0 10px; box-sizing: border-box; width: 100%; min-height: 500px; 
+}
+.gallery-title { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; color: var(--color-primary); margin-bottom: 6px; }
+.gallery-description { font-size: clamp(0.85rem, 1.5vw, 1.1rem); color: #7b7060; margin: 0 0 30px 0; line-height: 1.4; }
+
+/* --- GALLERY SECTION --- */
+.gallery-section { display: flex; justify-content: center; align-items: flex-start; width: 100%; position: relative; }
+.gallery-container {
+  perspective: 2000px; width: clamp(330px, 60vw, 800px); height: clamp(220px, 40vw, 550px);
+  position: relative; overflow: visible; touch-action: pan-y;
+}
+
+/* --- 3D CARD STYLES --- */
+.card {
+  position: absolute; width: 100%; height: 100%; border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .2); overflow: hidden; transform-origin: center;
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.6s ease, filter 0.6s ease;
+  background: var(--color-card-bg); border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); z-index: 1;
+}
+.card img, .card video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.card.prev { transform: translateX(-100%) translateZ(-500px) rotateY(35deg) scale(0.9); opacity: 0.6; filter: blur(5px); z-index: 0; }
+.card.next { transform: translateX(100%) translateZ(-500px) rotateY(-35deg) scale(0.9); opacity: 0.6; filter: blur(5px); z-index: 0; }
+.card.active { transform: translateX(0) translateZ(0) rotateY(0) scale(1); opacity: 1; filter: blur(0); z-index: 2; cursor: grab; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4); }
+.card.hidden { opacity: 0; pointer-events: none; transition: none; transform: scale(0.5) translateZ(-800px); }
+.card.out-of-stock { filter: grayscale(100%) brightness(80%); transition: filter 0.6s ease; }
+
+/* --- PRODUCT DETAIL CARD --- */
+.product-details {
+  background: var(--color-card-bg); backdrop-filter: blur(8px); border-radius: 12px;
+  margin-top: 30px; padding: 15px 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex; justify-content: space-between; align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.5); min-height: 80px; width: 100%;
+  box-sizing: border-box; max-width: clamp(330px, 60vw, 800px); 
+  margin-left: auto; margin-right: auto;
+}
+.product-info { flex-grow: 1; }
+.product-name { font-size: clamp(1.1rem, 2vw, 1.6rem); font-weight: 600; color: var(--color-primary); }
+.product-price { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 700; color: var(--color-secondary); margin-top: 2px; }
+.stock-status { font-size: clamp(0.8rem, 1.5vw, 1rem); font-weight: 600; margin-top: 2px; }
+.stock-available { color: red; }
+.stock-unavailable { color: grey; }
+
+.add-to-cart-btn {
+  background-color: var(--color-secondary); color: white; border: none; border-radius: 8px;
+  padding: 12px 25px; font-size: clamp(0.9rem, 1.5vw, 1.1rem); font-weight: 600; cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); margin-left: 20px;
+}
+.add-to-cart-btn:disabled { background-color: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+.add-to-cart-btn:hover:enabled { background-color: #8c602b; }
+.pulse-confirm { animation: pulse .3s; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+/* --- VIEWER (Zoom) --- */
+.viewer {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(10, 10, 10, 0.9); z-index: 9999; opacity: 0; visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease; pointer-events: none;
+}
+.viewer.show { opacity: 1; visibility: visible; pointer-events: auto; }
+.viewer-content {
+  position: relative; max-width: 95%; max-height: 90%; z-index: 10000;
+  transform: scale(.9); transition: transform .35s ease;
+}
+.viewer.show .viewer-content { transform: scale(1); }
+.viewer img, .viewer video {
+  width: auto; height: auto; max-width: 95vw; max-height: 85vh;
+  border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  background: #000; object-fit: contain; display: block;
+}
+.close-btn {
+  position: absolute; top: 10px; right: 10px; z-index: 10010;
+  background: rgba(255,255,255,0.8); border: none; border-radius: 50%;
+  width: 36px; height: 36px; font-size: 22px; font-weight: bold; color: var(--color-primary);
+  cursor: pointer; 
+}
+</style>
+</head>
+<body>
+
+<div class="gallery-wrapper" id="galleryWrapper">
+  <div class="gallery-title">Jualan Harian</div>
+  <div class="gallery-description">*LIMITED stok! untuk checkout pilih saje pickup atau COD(lala/grab), tq, Jemput santai cuci mata 😉</div>
+
+  <div class="gallery-section">
+    <div class="gallery-container" id="gallery">
+      </div>
+  </div>
+
+  <div class="product-details">
+    <div class="product-info">
+      <div class="product-name" id="product-name">Loading...</div>
+      <div class="product-price" id="product-price"></div>
+      <div class="stock-status" id="stock-status">Connecting...</div>
+    </div>
+    <button class="add-to-cart-btn" id="add-to-cart-btn" disabled>Wait</button>
+  </div>
+</div>
+
+<div id="mediaViewer" class="viewer" aria-hidden="true">
+  <div class="viewer-content">
+    <img id="viewerImage" src="" alt="" />
+    <video id="viewerVideo" controls playsinline webkit-playsinline></video>
+    <button id="viewerClose" class="close-btn" aria-label="Close viewer">&times;</button>
+  </div>
+</div>
+
+<script>
+// --- CONFIGURATION ---
+const API_URL = "https://replit.com/@mbi5385/PipahCookies-Backend?s=app"; 
+
+let products = [];
+let cards;
+let activeIndex = 0;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // DOM Elements
+    const gallery = document.getElementById('gallery');
+    const productNameEl = document.getElementById('product-name');
+    const productPriceEl = document.getElementById('product-price');
+    const stockStatusEl = document.getElementById('stock-status'); 
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    const viewer = document.getElementById('mediaViewer');
+    const viewerImg = document.getElementById('viewerImage');
+    const viewerVid = document.getElementById('viewerVideo');
+    const viewerClose = document.getElementById('viewerClose');
+    const galleryWrapper = document.getElementById('galleryWrapper');
+    const viewerContent = viewer.querySelector('.viewer-content');
+
+    // --- FETCH DATA ---
+    try {
+        const res = await fetch(`${API_URL}/api/data`);
+        const data = await res.json();
+        products = data.gallery || []; 
+        
+        if(products.length === 0) {
+             handleNoProducts();
+        } else {
+             initializeGallery();
+             setActive(0);
+        }
+    } catch (error) {
+        console.error("Error connecting to API:", error);
+        handleNoProducts();
+    }
+
+    function handleNoProducts() {
+        productNameEl.textContent = 'No Items Found';
+        productPriceEl.textContent = '';
+        stockStatusEl.textContent = 'Please check Admin Panel';
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = 'Unavailable';
+    }
+
+    function createCard(product, index) {
+        const card = document.createElement('div');
+        // Add out-of-stock class immediately if stock is 0
+        const stockClass = (product.stock <= 0) ? ' out-of-stock' : '';
+        card.className = `card${stockClass}`;
+        card.setAttribute('data-index', index);
+        
+        let mediaElement;
+        if (product.isVideo) {
+            mediaElement = document.createElement('video');
+            mediaElement.src = product.mediaUrl; 
+            mediaElement.muted = true; mediaElement.loop = true; mediaElement.playsInline = true;
+        } else {
+            mediaElement = document.createElement('img');
+            mediaElement.src = product.mediaUrl;
+        }
+        mediaElement.style.width = "100%"; mediaElement.style.height = "100%"; mediaElement.style.objectFit = "cover";
+        card.appendChild(mediaElement);
+        return card;
+    }
+  
+    function initializeGallery() {
+        gallery.innerHTML = ''; 
+        products.forEach((product, index) => {
+            const card = createCard(product, index);
+            gallery.appendChild(card);
+        });
+        cards = Array.from(gallery.querySelectorAll('.card')); 
+    }
+  
+    // --- CART HOOK ---
+    addToCartBtn.addEventListener('click', () => {
+        const product = products[activeIndex];
+        if (!product || product.stock <= 0) return alert('Out of stock');
+        
+        // Send message to parent (index.html)
+        window.parent.postMessage({ 
+            eventType: 'gallery:addToCart',
+            detail: { 
+                productId: product.id, 
+                productName: product.name, 
+                productPrice: parseFloat(product.price), 
+                quantity: 1
+            } 
+        }, '*');
+        
+        addToCartBtn.classList.add('pulse-confirm');
+        setTimeout(() => addToCartBtn.classList.remove('pulse-confirm'), 300);
+    });
+
+    // --- SLIDER FUNCTIONS ---
+    function setActive(index) {
+        if (!cards || cards.length === 0) return;
+        activeIndex = (index + cards.length) % cards.length; 
+        
+        cards.forEach((c, i) => {
+          let state = 'hidden';
+          if (i === activeIndex) state = 'active';
+          else if (i === (activeIndex + 1) % cards.length) state = 'next';
+          else if (i === (activeIndex - 1 + cards.length) % cards.length) state = 'prev';
+          
+          const productStock = products[i] ? products[i].stock : 0;
+          const stockClass = (productStock <= 0) ? ' out-of-stock' : '';
+          
+          c.className = `card ${state}${stockClass}`;
+          
+          const video = c.querySelector('video');
+          if (video) {
+            if (i === activeIndex) video.play().catch(()=>{});
+            else video.pause();
+          }
+        });
+        
+        const currentProduct = products[activeIndex];
+        productNameEl.textContent = currentProduct.name;
+        productPriceEl.textContent = `RM ${parseFloat(currentProduct.price).toFixed(2)}`; 
+        
+        const stock = currentProduct.stock;
+        if (stock > 0) {
+            addToCartBtn.disabled = false; addToCartBtn.textContent = 'Add to Cart';
+            stockStatusEl.className = 'stock-status stock-available'; stockStatusEl.textContent = `${stock} available`;
+        } else {
+            addToCartBtn.disabled = true; addToCartBtn.textContent = 'Sold Out';
+            stockStatusEl.className = 'stock-status stock-unavailable'; stockStatusEl.textContent = 'Out of Stock';
+        }
+    }
+
+    function dragControl(container, onSwipe){
+        let dragging = false, startX = 0, diff = 0;
+        const startDrag = (clientX) => { dragging = true; startX = clientX; container.style.cursor = 'grabbing'; };
+        const moveDrag = (clientX) => { if(dragging) diff = clientX - startX; };
+        const endDrag = () => { 
+            if(dragging){ 
+                if(Math.abs(diff) > 30) onSwipe(diff < 0 ? 1 : -1);
+                dragging = false; diff = 0; 
+            }
+            container.style.cursor = 'grab';
+        };
+        container.addEventListener('touchstart', e => startDrag(e.touches[0].clientX), {passive: true});
+        container.addEventListener('touchmove', e => moveDrag(e.touches[0].clientX), {passive: true});
+        container.addEventListener('touchend', endDrag);
+        container.addEventListener('mousedown', e => { startDrag(e.clientX); e.preventDefault(); });
+        container.addEventListener('mousemove', e => moveDrag(e.clientX));
+        container.addEventListener('mouseup', endDrag);
+        container.addEventListener('mouseleave', () => { dragging = false; diff = 0; container.style.cursor = 'grab'; });
+    }
+    dragControl(gallery, d => setActive(activeIndex + d));
+    dragControl(viewerContent, d => setActive(activeIndex + d));
+
+    // --- VIEWER ---
+    function showViewer(index){
+        const media = cards[index].querySelector('img, video');
+        if(!media) return;
+        viewerImg.style.display = 'none'; viewerVid.style.display = 'none'; viewerVid.pause();
+        if(media.tagName === 'IMG') { viewerImg.src = media.src; viewerImg.style.display = 'block'; }
+        if(media.tagName === 'VIDEO'){ viewerVid.src = media.src; viewerVid.style.display = 'block'; viewerVid.load(); viewerVid.play().catch(()=>{}); }
+    }
+    function openViewer(index){ viewer.classList.add('show'); setActive(index); showViewer(index); }
+    function closeViewer(){ viewer.classList.remove('show'); viewerVid.pause(); }
+
+    gallery.addEventListener('click', (e) => {
+        const activeCard = e.target.closest('.card.active');
+        if (activeCard) openViewer(activeIndex);
+    });
+    viewerClose.addEventListener('click', closeViewer);
+    viewer.addEventListener('click', e => { if(e.target === viewer || e.target === viewerClose) closeViewer(); });
+
+    function resizeIframe() { window.parent.postMessage({ galleryHeight: galleryWrapper.offsetHeight }, '*'); }
+    window.addEventListener('resize', resizeIframe);
+});
+</script>
+</body>
+</html>
