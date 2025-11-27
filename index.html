@@ -7,12 +7,10 @@
   <title>Pipah Cookies — Homemade rasa Premium</title>
 
   <link rel="apple-touch-icon" href="Images/icon.png">
-  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      /* Defaults if no config loaded */
       --primary: #A67734;
       --primary-dark: #8b5e2b;
       --accent: #fff1e6;
@@ -28,7 +26,7 @@
     
     body {
       margin: 0;
-      padding-bottom: calc(90px + var(--safe-area-bottom));
+      padding-bottom: calc(80px + var(--safe-area-bottom));
       font-family: "Poppins", sans-serif;
       background-color: var(--bg-color);
       color: var(--text-main);
@@ -162,28 +160,131 @@
       border: none; border-radius: 8px; font-weight: 600; font-size: 13px;
     }
 
-    /* --- Testimonials, Embeds, FAQ --- */
-    .testimonial-card {
-      background: #fff; border-radius: 20px; overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+    /* --- FIXED TESTIMONIALS CSS --- */
+    .testimonial-section {
+      position: relative; 
+      overflow: hidden; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      justify-content: center; 
+      padding: 80px 20px; 
+      background: linear-gradient(to bottom right, #fff5f7, #ffeef1);
+      min-height: 600px; /* Taller to fit bigger circles */
     }
-    @media (min-width: 768px) {
-      .testimonial-card { flex-direction: row; align-items: center; }
-      .tst-img-box { width: 50%; height: 350px !important; }
-      .tst-content-box { width: 50%; padding: 40px !important; }
+    .testimonial-bg {
+      position: absolute; inset: 0; 
+      background-size: cover; background-position: center;
+      filter: blur(40px); opacity: 0.4; 
+      z-index: 0; 
     }
-    .tst-img-box { position: relative; width: 100%; height: 250px; background: #f0f0f0; }
-    .tst-img-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; opacity: 0; transition: opacity 0.5s; }
-    .tst-img-box img.active { opacity: 1; }
-    .tst-content-box { padding: 30px 20px; text-align: center; background: #fff5f7; }
+    
+    .testimonial-gallery {
+      position: relative; 
+      z-index: 2; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    /* --- ROUND FRAME STYLING --- */
+    .testimonial-item {
+        display: none;
+        position: relative;
+        /* Increased Size massively */
+        width: 360px; 
+        height: 360px;
+        max-width: 85vw; /* Responsive for small screens */
+        max-height: 85vw; /* Keep ratio */
+        border-radius: 50%; 
+        overflow: hidden;
+        border: 5px solid rgba(255,255,255,0.8);
+        box-shadow: 0 15px 35px rgba(166, 119, 52, 0.2);
+        animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .testimonial-item.active {
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .testimonial-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0; left: 0;
+        z-index: 1;
+        transition: transform 5s ease;
+    }
+    /* Subtle zoom effect on active image */
+    .testimonial-item.active img { transform: scale(1.1); }
+
+    .quote-overlay {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        /* Adjusted Gradient: Clearer at top, dark only at bottom text area */
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 40%, rgba(255,255,255,0) 100%);
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* Push text to bottom */
+        padding: 0 30px 60px 30px; /* Padding bottom to lift text */
+        z-index: 2;
+        text-align: center;
+    }
+
     .quote-text {
-      font-size: 16px; font-style: italic; color: #555; line-height: 1.6; margin-bottom: 20px;
-      min-height: 80px; display: flex; align-items: center; justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        line-height: 1.4;
+        /* Strong shadow for readability over clear image */
+        text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+        margin: 0;
+        transform: translateY(10px);
+        opacity: 0;
+        animation: slideUpText 0.6s 0.2s forwards ease-out;
     }
-    .nav-arrows button {
-      background: white; border: 1px solid #ddd; width: 40px; height: 40px;
-      border-radius: 50%; font-size: 18px; margin: 0 5px; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    
+    @keyframes slideUpText {
+        to { transform: translateY(0); opacity: 1; }
     }
+
+    .controls { 
+      display: flex; 
+      justify-content: center; 
+      gap: 30px; 
+      width: 100%; 
+      margin-top: 20px; 
+      position: relative;
+      z-index: 5; 
+    }
+    .controls button {
+      background: rgba(255,255,255,0.9); 
+      border: none; 
+      font-size: 28px;
+      border-radius: 50%; 
+      cursor: pointer; 
+      width: 55px; 
+      height: 55px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+      color: var(--primary);
+      transition: all 0.2s;
+    }
+    .controls button:active { transform: scale(0.9); background: #eee; }
+
+    /* --- Embeds --- */
     .embed-wrapper {
       background: #f4f4f4; border-radius: 20px; overflow: hidden;
       width: 100%; margin: 0 auto; position: relative;
@@ -195,38 +296,34 @@
         .gallery-wrapper { height: 600px; }
     }
     iframe { width: 100%; height: 100%; border: none; }
-    .gallery-iframe {
-    height: 400px; /* Phone height */
-}
 
-/* Media Query: Overrides height for screens wider than 600 pixels (Tablet/Desktop view) */
-@media (min-width: 600px) {
-    .gallery-iframe {
-        height: 600px; /* Desktop height */
-    }
-}
-
-    /* --- Cart & Floating UI --- */
+    /* --- Floating UI & Bottom Nav --- */
     .mobile-bottom-nav {
       position: fixed; bottom: 0; left: 0; width: 100%;
       background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
       border-top: 1px solid #eee; display: flex; justify-content: space-around;
       padding: 10px 0 calc(10px + var(--safe-area-bottom)); z-index: 999;
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #aaa; background: none; border: none; }
+    .nav-item { 
+        display: flex; flex-direction: column; align-items: center; 
+        font-size: 10px; color: #aaa; background: none; border: none; 
+        position: relative; 
+    }
     .nav-item.active { color: var(--primary); }
     .nav-icon { font-size: 20px; margin-bottom: 2px; }
 
-    .fab-cart {
-      position: fixed; bottom: 100px; right: 20px; background: var(--primary); color: white;
-      width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 10px 20px rgba(166, 119, 52, 0.3); z-index: 990; border: none; font-size: 24px;
+    /* New Nav Badge style */
+    .nav-badge {
+        position: absolute; top: -5px; right: 8px;
+        background: #ff4757; color: white;
+        font-size: 10px; font-weight: bold;
+        width: 18px; height: 18px;
+        border-radius: 50%;
+        display: none; /* Hidden if 0 */
+        align-items: center; justify-content: center;
+        border: 2px solid #fff;
     }
-    .fab-badge {
-      position: absolute; top: -5px; right: -5px; background: #ff4757;
-      color: white; font-size: 11px; font-weight: bold; width: 20px; height: 20px;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;
-    }
+
     .whatsapp-float {
         position: fixed; right: 0; top: 70%;
         background: #25D366; color: white; padding: 10px 15px 10px 20px;
@@ -235,11 +332,29 @@
         box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); transition: transform 0.3s;
     }
     .whatsapp-float:hover { transform: translateX(-5px); }
-    .music-player { position: fixed; bottom: 105px; left: 20px; z-index: 990; }
+
+    /* Music Player Styles - LEFT BOTTOM */
+    #musicWrapper {
+      position: fixed; 
+      bottom: 90px; /* Above bottom nav */
+      left: 20px;   /* Left Side */
+      z-index: 980;
+      display: flex; align-items: center; gap: 10px;
+      transition: all 0.5s ease;
+      flex-direction: row-reverse; /* Flip text/icon for left side */
+    }
     .music-disc {
-      width: 45px; height: 45px; background: rgba(255,255,255,0.9);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 2px solid #fff; cursor: pointer;
+      width: 45px; height: 45px; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px); border-radius: 50%; border: 2px solid rgba(255,255,255,0.5);
+      color: #fff; font-size: 20px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .music-disc.playing { background: var(--primary); border-color: #fff; }
+    .music-disc.spinning { animation: spin 3s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    #musicText {
+      background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 10px;
+      font-size: 12px; opacity: 0; transition: opacity 0.5s; pointer-events: none;
     }
 
     /* Cart Panel & Utils */
@@ -267,19 +382,18 @@
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     .hidden { display: none !important; }
     .center-text { text-align: center; }
- 
-/* Base style: Applied to all screens (Phone view) */
-.gallery-iframe {
-    height: 400px; /* Phone height */
-}
-
-/* Media Query: Overrides height for screens wider than 600 pixels (Tablet/Desktop view) */
-@media (min-width: 600px) {
-    .gallery-iframe {
-        height: 600px; /* Desktop height */
+    
+    /* Install Popup */
+    #pipahInstallPopup {
+      position: fixed; bottom: -70px; left: 50%; transform: translateX(-50%);
+      background: rgba(255,248,242,0.95); border: 1.5px solid var(--primary);
+      border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 10px 20px; font-family: "Poppins",sans-serif; text-align: center;
+      z-index: 9999; transition: bottom .4s ease, opacity .4s ease; opacity: 0; display: none;
     }
-}
-  
+    #pipahInstallPopup.show { display: block; bottom: 20px; opacity: 1; }
+    #pipahInstallPopup p { color: var(--primary); font-weight: 600; margin: 0; cursor: pointer; }
+    #pipahInstallPopup .closeBtn { position: absolute; top: 2px; right: 8px; font-size: 16px; color: #666; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -290,7 +404,7 @@
         <div class="brand-logo">🍪 Pipah<span>Cookies</span></div>
     </div>
     <nav class="desktop-nav">
-      <a href="#products">Menu</a>
+      <a href="#products">Produk Kami</a>
       <a href="#about">Tentang Kami</a>
       <a href="#game">Game</a>
     </nav>
@@ -333,41 +447,12 @@
     </div>
   </section>
 
-   <div class="pipah-gallery-container">
-    <iframe 
-        src="admin.html" 
-        class="pipah-gallery-iframe" 
-        title="PipahCookies Product Gallery"
-        scrolling="no"
-    ></iframe>
-   </div>
-       <style>
-     /* Container for centering the entire embed */
-.pipah-gallery-container {
-    /* Set max width to match the gallery's internal max-width (380px) plus padding */
-    max-width: 400px; 
-    margin: 30px auto; /* Centers the whole gallery horizontally */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Optional: A nice lift effect */
-    border-radius: 10px;
-    background: #f7f3ee; /* Match the gallery's background for a seamless look */
-    padding: 10px; /* Internal padding */
-}
-
-/* Styling for the iFrame itself */
-.pipah-gallery-iframe {
-    width: 100%;
-    /* Set a fixed height that accommodates the gallery (220px) + details card (~80px) */
-    height: 480px; 
-    border: none; /* Crucial: Removes the default iFrame border */
-    display: block;
-    overflow: hidden; /* Prevent scrolls inside the iFrame */
-}
-
-/* IMPORTANT: Ensure your body/main page content has a high enough Z-index 
-   so the fixed cart popup (Z-index 999) doesn't appear under elements 
-   like a fixed header on your main page. */
-
-       </style>
+  <section class="section fade-up" style="animation-delay: 0.1s;">
+    <h2 class="section-title">Selamat Datang ke PipahCookies</h2>
+    <div class="embed-wrapper" style="height: 80vh; min-height: 600px;">
+        <iframe src="admin.html" title="Admin Panel" onerror="this.style.display='none'"></iframe>
+    </div>
+  </section>
 
   <section id="products" class="section fade-up" style="animation-delay: 0.2s;">
     <h2 class="section-title">Menu Pilihan</h2>
@@ -382,57 +467,55 @@
         </div>
     </div>
   </section>
-  <section id="gallery" style="background-color: #fafafa; padding: 60px 0; text-align: center;">
-    <p> sila swipe dan tap untuk buka </p>
-    <iframe 
-        src="3dGallery.html" 
-        class="gallery-iframe"
-        style="
-            border: none; 
-            width: 100%; 
-            max-width: 1000px; /* Limits max width on huge screens */
-            display: block; 
-            margin: 0 auto; /* Centers the iframe horizontally */
-        "
-        title="3D Product Gallery"
-        scrolling="no"
-    ></iframe>
-</section>
-
-</section>
-    <section id="gallery">
- <p> sila tap untuk buka </p>
-  <iframe 
-      src="gallery.html" 
-      width="100%" 
-      style="border:none;" 
-      id="galleryIframe" 
-      scrolling="no">
-  </iframe>
-    </section>
-
-  <section id="testimonials" class="section fade-up">
-    <h2 class="section-title">Apa Kata Mereka?</h2>
-    <div class="testimonial-card">
-      <div class="tst-img-box">
-        <img src="Images/tst1.jpg" class="active" onerror="this.src='Images/tst1'">
-        <img src="Images/tst2.jpg" onerror="this.src='https://placehold.co/600x400/ffeef1/555?text=Repeat+Order!'">
-        <img src="Images/tst3.jpg" onerror="this.src='https://placehold.co/600x400/ffeef1/555?text=Premium+Taste'">
-      </div>
-      <div class="tst-content-box">
-        <div class="quote-text">"Founder SK sendiri puji biskut brownies dan seasalt cookies sedapp!"</div>
-        <div class="nav-arrows">
-           <button onclick="changeTestimonial(-1)">‹</button>
-           <button onclick="changeTestimonial(1)">›</button>
-        </div>
-      </div>
+  <section class="section fade-up">
+    <h2 class="section-title">Gallery</h2>
+    <div class="embed-wrapper gallery-wrapper">
+        <iframe src="3dGallery.html" id="galleryIframe" title="3D Gallery" onerror="this.style.display='none'"></iframe>
     </div>
   </section>
+    
+  <section class="testimonial-section" id="testimonials">
+    <h2 class="section-title">Apa kata pelanggan kami?</h2>
+    <div class="testimonial-bg"></div>
+
+    <div class="testimonial-gallery">
+        <div class="testimonial-item active">
+            <img src="Images/tst1.jpg" alt="testimonial 1" onerror="this.src='https://placehold.co/500?text=User1'" />
+            <div class="quote-overlay">
+                <p class="quote-text">"Founder SK sendiri puji biskut brownies dan seasalt cookies sedapp"</p>
+            </div>
+        </div>
+        <div class="testimonial-item">
+            <img src="Images/tst2.jpg" alt="testimonial 2" onerror="this.src='https://placehold.co/500?text=User2'" />
+            <div class="quote-overlay">
+                <p class="quote-text">"The seasalt biscuits are so tasty, thank you once again"</p>
+            </div>
+        </div>
+        <div class="testimonial-item">
+            <img src="Images/tst3.jpg" alt="testimonial 3" onerror="this.src='https://placehold.co/500?text=User3'" />
+            <div class="quote-overlay">
+                <p class="quote-text">"Sedap nya biskut pipah 🤭🤭"</p>
+            </div>
+        </div>
+        <div class="testimonial-item">
+            <img src="Images/tst.jpg" alt="testimonial 4" onerror="this.src='https://placehold.co/500?text=User4'" />
+            <div class="quote-overlay">
+                <p class="quote-text">"Kenapa cookies sedap giler 🤎"</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+      <button id="prev">‹</button>
+      <button id="next">›</button>
+    </div>
+  </section>
+  
 
   <section id="about" class="section fade-up" style="margin-top: 20px;">
     <div class="profile-section">
       <img src="Images/icon.png" class="profile-avatar" onerror="this.src='https://placehold.co/200/A67734/fff?text=Miss+PC'">
-      <h3 id="profile-name">Miss PC (Pipah) <span style="color:#3b82f6; font-size:14px;">✔</span></h3>
+      <h3 id="profile-name">PipahCookies <span style="color:#3b82f6; font-size:14px;">✔</span></h3>
       <p style="color:var(--text-muted); line-height:1.6;" id="profile-desc">"Misi saya: Bagi semua orang rasa cookies premium pada harga marhaen."</p>
     </div>
   </section>
@@ -441,8 +524,14 @@
     <h2 class="section-title">Soalan Lazim</h2>
     <div style="display: grid; gap: 10px; max-width: 800px; margin: 0 auto;">
         <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
-            <div style="font-weight:600; color:var(--primary);">Penghantaran ke mana?</div>
-            <div style="font-size:14px; color:#666;">Seluruh Malaysia termasuk Sabah & Sarawak.</div>
+            <div style="font-weight:600; color:var(--primary);">Adakah anda mempunyai khidmat penghantaran?</div>
+            <div style="font-size:14px; color:#666;">Ya ke Seluruh Malaysia termasuk Sabah & Sarawak.</div>
+          <div style="font-weight:600; color:var(--primary); margin-top:10px;">Bagaimana payment dan postage ?</div>
+            <div style="font-size:14px; color:#666;">Kami menyediakan pembayaran online transfer,QR Duitnow,dan COD- postage bergantung kepada berat bungkusan.</div>
+     <div style="font-weight:600; color:var(--primary); margin-top:10px;">Adakah biskut anda halal?</div>
+            <div style="font-size:14px; color:#666;"> Ya — bahan yang digunakan adalah Halal 100%.</div>
+     <div style="font-weight:600; color:var(--primary); margin-top:10px;">Berapa lama ketahanan?</div>
+            <div style="font-size:14px; color:#666;"> Disyorkan paling lama 30 hari jika disimpan rapat.</div>
         </div>
     </div>
   </section>
@@ -463,11 +552,14 @@
   
   <a href="https://wa.me/601121243407" class="whatsapp-float" target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="24" height="24" alt="WA">
-    <span></span>
+    <span>WhatsApp</span>
   </a>
-  <div class="music-player"><div class="music-disc" id="musicBtn">🎵</div></div>
+
+  <div id="musicWrapper">
+      <div id="musicText">Play Music</div>
+      <div class="music-disc" id="musicBtn">🎵</div>
+  </div>
   <audio id="bgmusic" loop><source src="Images/music.mp3" type="audio/mpeg"></audio>
-  <button class="fab-cart" onclick="toggleCart()">🛒 <span class="fab-badge" id="cart-badge">0</span></button>
 
   <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
   <aside class="cart-panel" id="cart-panel">
@@ -489,15 +581,9 @@
         </select>
         
         <div id="cart-summary" style="margin-bottom:15px; text-align:right; font-size:14px; line-height:1.6;">
-            </div>
-
-        <button id="btn-checkout-view" class="btn-primary" onclick="showCheckoutFields()">Checkout</button>
-        
-        <div id="checkout-fields" class="hidden checkout-form" style="margin-top:10px;">
-            <input type="text" id="full-name" placeholder="Nama Penuh">
-            <textarea id="full-address" placeholder="Alamat Penuh" rows="2"></textarea>
-            <button class="btn-primary" style="background:#25D366;" onclick="sendOrder()">Hantar WhatsApp</button>
         </div>
+
+        <button id="btn-checkout-view" class="btn-primary" onclick="proceedToCheckout()">Checkout</button>
     </div>
   </aside>
 
@@ -505,46 +591,138 @@
     <button class="nav-item active" onclick="window.scrollTo(0,0)"><span class="nav-icon">🏠</span><span>Home</span></button>
     <button class="nav-item" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🍪</span><span>Menu</span></button>
     <button class="nav-item" onclick="document.getElementById('game').scrollIntoView({behavior:'smooth'})"><span class="nav-icon">🦖</span><span>Game</span></button>
-    <button class="nav-item" onclick="toggleCart()"><span class="nav-icon">🛍️</span><span>Cart</span></button>
+    <button class="nav-item" onclick="toggleCart()">
+        <span class="nav-icon">🛍️</span>
+        <span>Cart</span>
+        <span class="nav-badge" id="nav-cart-badge">0</span>
+    </button>
   </nav>
+
+  <div id="pipahInstallPopup">
+    <span class="closeBtn" onclick="closePipahPopup()">×</span>
+    <p id="pipahInstallText"></p>
+  </div>
 
   <script>
     // *** CONFIGURATION ***
-    // REPLACE THIS WITH YOUR REPLIT URL
-    const API_URL = "https://replit.com/@mbi5385/PipahCookies-Backend?s=app";
+    const API_URL = "https://PipahCookies-Backend.mbi5385.repl.co"; 
 
     let cart = JSON.parse(localStorage.getItem('pipah_cart_v2') || "[]");
-    let products = []; // Will load from API
+    let products = []; 
 
-    // Load Data on Startup
+    // --- LOAD DATA ---
     window.onload = async function() {
         try {
             const res = await fetch(`${API_URL}/api/data`);
+            if (!res.ok) throw new Error("API not reachable");
             const data = await res.json();
-            
             products = data.products || [];
-            
-            // Render Site based on Data
-            renderStoreProducts();
-            applySiteConfig(data.settings);
-            
-            // Initial cart render
-            saveAndRender();
+            if(data.settings) applySiteConfig(data.settings);
         } catch(e) {
-            console.error(e);
+            console.warn("API Error, loading mock data:", e);
+            // Fallback Data
+            products = [
+                { id: '1', name: 'Seasalt Chocolate Chip', price: 25, images: ['Images/ss1.jpg'] },
+                { id: '2', name: 'Red Velvet Cookies', price: 28, images: ['Images/rv1.jpg'] },
+                { id: '3', name: 'Brownies Cookies', price: 30, images: ['Images/br1.jpg'] }
+            ];
+        }
+        
+        renderStoreProducts();
+        saveAndRender();
+        initTestimonials(); // Initialize Testimonials
+        
+        // Initialize Music Player Text
+        setTimeout(showText, 1000);
+        detectColorUnderButton();
+        
+        // PWA check
+        if (!isInstalled) {
+            setTimeout(() => {
+              const popup = document.getElementById("pipahInstallPopup");
+              if(popup) {
+                  updateInstallText();
+                  popup.style.display = "block";
+                  setTimeout(() => popup.classList.add("show"), 50);
+              }
+            }, 5000);
         }
     };
 
+    // --- HERO SLIDER ---
+    const heroTrack = document.getElementById('heroTrack');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+    let heroInterval;
+
+    function updateHeroSlide() {
+        if(!heroTrack) return;
+        heroTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+        heroDots.forEach((dot, index) => {
+            if (index === currentSlide) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+    }
+
+    function nextHeroSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateHeroSlide();
+    }
+
+    function startHeroTimer() {
+        clearInterval(heroInterval);
+        heroInterval = setInterval(nextHeroSlide, 4000);
+    }
+    if(slides.length > 0) startHeroTimer();
+
+    heroDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlide = index;
+            updateHeroSlide();
+            startHeroTimer();
+        });
+    });
+
+    // --- UPDATED TESTIMONIALS LOGIC ---
+    function initTestimonials() {
+        // Select the new testimonial items instead of separate images and quotes
+        const tItems = document.querySelectorAll('.testimonial-item');
+        const btnPrev = document.getElementById('prev');
+        const btnNext = document.getElementById('next');
+        let tIndex = 0;
+
+        function updateTestimonial() {
+            // Remove active class from all items
+            tItems.forEach(item => item.classList.remove('active'));
+            
+            // Add active class to current item if it exists
+            if(tItems[tIndex]) {
+                tItems[tIndex].classList.add('active');
+            }
+        }
+
+        if(btnNext && btnPrev) {
+            btnNext.onclick = function() {
+                tIndex = (tIndex + 1) % tItems.length;
+                updateTestimonial();
+            };
+            btnPrev.onclick = function() {
+                tIndex = (tIndex - 1 + tItems.length) % tItems.length;
+                updateTestimonial();
+            };
+        }
+    }
+
+    // --- CORE FUNCTIONS ---
     function applySiteConfig(s) {
         if(!s) return;
         if(s.primary) document.documentElement.style.setProperty('--primary', s.primary);
-        if(s.bg) document.documentElement.style.setProperty('--bg-color', s.bg);
         if(s.brand) document.querySelector('.brand-logo').innerHTML = `🍪 ${s.brand}<span>Cookies</span>`;
-        if(s.announcement) showToast(s.announcement); // Or update a banner div
     }
 
     function renderStoreProducts() {
-        const grid = document.getElementById('store-product-grid'); // Ensure your HTML has this ID
+        const grid = document.getElementById('store-product-grid');
         grid.innerHTML = '';
 
         if(products.length === 0) {
@@ -553,8 +731,7 @@
         }
 
         products.forEach(p => {
-            const img = p.images[0] || 'https://placehold.co/400x300?text=No+Image';
-            
+            const img = (p.images && p.images[0]) ? p.images[0] : 'https://placehold.co/400x300?text=No+Image';
             grid.innerHTML += `
               <article class="product-card">
                 <div class="product-slider">
@@ -575,15 +752,16 @@
         });
     }
 
-    // --- SIDEBAR FUNCTION (ADDED FIX) ---
     window.toggleSidebar = function() {
-        document.getElementById('sidebar-panel').classList.toggle('open');
-        document.getElementById('sidebar-overlay').classList.toggle('open');
+        const panel = document.getElementById('sidebar-panel');
+        const overlay = document.getElementById('sidebar-overlay');
+        if(panel) panel.classList.toggle('open');
+        if(overlay) overlay.classList.toggle('open');
     }
 
-    // --- CART FUNCTIONS ---
     window.updateQty = function(id, delta) {
         const el = document.getElementById('qty-' + id);
+        if(!el) return;
         let val = parseInt(el.value) || 0;
         el.value = Math.max(0, val + delta);
     }
@@ -601,22 +779,23 @@
         
         qtyEl.value = 0;
         saveAndRender();
-        
-        // Cart Animation
-        const btn = document.querySelector('.fab-cart');
-        btn.style.transform = "scale(1.2)"; setTimeout(()=> btn.style.transform = "scale(1)", 200);
+        toggleCart(); // Show cart when adding
     }
 
     window.toggleCart = function() {
-        document.getElementById('cart-panel').classList.toggle('open');
-        document.getElementById('cart-overlay').classList.toggle('open');
+        const panel = document.getElementById('cart-panel');
+        const overlay = document.getElementById('cart-overlay');
+        if(panel) panel.classList.toggle('open');
+        if(overlay) overlay.classList.toggle('open');
     }
 
     window.saveAndRender = function() {
         localStorage.setItem('pipah_cart_v2', JSON.stringify(cart));
         const list = document.getElementById('cart-items');
         const summaryEl = document.getElementById('cart-summary');
-        const badge = document.getElementById('cart-badge');
+        
+        // Update Nav Badge
+        const navBadge = document.getElementById('nav-cart-badge');
         
         list.innerHTML = '';
         let subtotal = 0, count = 0;
@@ -627,74 +806,188 @@
             list.innerHTML += `
                 <li style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
                     <div><b>${item.name}</b><br><small>RM${item.price} x ${item.qty}</small></div>
-                    <div style="text-align:right;">RM${(item.price * item.qty).toFixed(2)}<br><span style="color:red; cursor:pointer;" onclick="removeItem(${idx})">Buang</span></div>
+                    <div style="text-align:right;">RM${(item.price * item.qty).toFixed(2)}<br><span style="color:red; cursor:pointer; font-size:12px;" onclick="removeItem(${idx})">Buang</span></div>
                 </li>`;
         });
 
-        badge.textContent = count;
-        summaryEl.innerText = `Total: RM ${subtotal.toFixed(2)}`;
+        // Toggle Badge Visibility
+        if (navBadge) {
+            navBadge.textContent = count;
+            navBadge.style.display = count > 0 ? 'flex' : 'none';
+        }
+
+        if (summaryEl) summaryEl.innerText = `Total: RM ${subtotal.toFixed(2)}`;
         
-        if(cart.length === 0) list.innerHTML = '<li style="text-align:center; color:#999;">Troli kosong</li>';
+        if(cart.length === 0) list.innerHTML = '<li style="text-align:center; color:#999; padding:20px;">Troli kosong</li>';
     }
 
     window.removeItem = function(idx) { cart.splice(idx, 1); saveAndRender(); }
-    window.showCheckoutFields = function() { 
-        if(cart.length===0) return;
-        document.getElementById('checkout-fields').classList.remove('hidden'); 
-        document.getElementById('btn-checkout-view').classList.add('hidden');
-    }
 
-    // --- CHECKOUT LOGIC ---
-    window.sendOrder = async function() {
-        const name = document.getElementById('full-name').value;
-        const address = document.getElementById('full-address').value;
-        if(!name || !address) return alert("Sila isi butiran lengkap");
-
-        const btn = document.querySelector('#checkout-fields button');
-        const originalText = btn.innerText;
-        btn.innerText = "Processing..."; btn.disabled = true;
-
-        // Calculate total
-        let total = 0; 
-        let summaryText = "";
-        cart.forEach(c => {
-            total += (c.price * c.qty);
-            summaryText += `${c.name} x${c.qty}, `;
-        });
-
-        const orderData = {
-            name: name,
-            address: address,
-            items: cart,
-            summary: summaryText,
-            total: total.toFixed(2)
-        };
-
-        try {
-            // 1. Send to Backend (So Admin sees it)
-            await fetch(`${API_URL}/api/orders`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(orderData)
-            });
-
-            // 2. Clear Cart
-            cart = []; saveAndRender();
-            toggleCart();
-
-            // 3. Send to WhatsApp (User convenience)
-            let waMsg = `Hai Pipah! Saya dah order kat website.\nNama: ${name}\nItems:\n`;
-            orderData.items.forEach(c => waMsg += `- ${c.name} (${c.qty})\n`);
-            waMsg += `Total: RM${orderData.total}`;
-            
-            window.location.href = `https://wa.me/601121243407?text=${encodeURIComponent(waMsg)}`;
-            
-        } catch(e) {
-            alert("Error submitting order. Please try again.");
-            btn.innerText = originalText; btn.disabled = false;
+    // --- CHECKOUT LOGIC (REDIRECT) ---
+    window.proceedToCheckout = function() {
+        if (cart.length === 0) {
+            alert("Troli kosong! Sila tambah produk.");
+            return;
         }
+        
+        // Save current state securely before redirecting
+        localStorage.setItem('pipah_cart_v2', JSON.stringify(cart));
+        
+        // Redirect to Invoice page
+        window.location.href = 'invois.html';
     }
-</script>
 
+    // --- MUSIC PLAYER (LEFT BOTTOM) ---
+    const music = document.getElementById('bgmusic');
+    const btn = document.getElementById('musicBtn');
+    const text = document.getElementById('musicText');
+    const wrapper = document.getElementById('musicWrapper');
+    let isPlaying = false;
+    let savedTime = 0;
+    let lastScrollY = window.scrollY;
+
+    function showText() {
+      if(!text) return;
+      text.style.opacity = 1;
+      setTimeout(() => { text.style.opacity = 0; }, 5000);
+    }
+
+    function detectColorUnderButton() {
+      // Simple logic since precise element detection is complex
+      if(btn) btn.style.color = '#fff'; 
+    }
+
+    window.addEventListener('scroll', () => {
+      const currentY = window.scrollY;
+      if (wrapper) {
+          // Hide music on scroll down, show on scroll up
+          if (currentY > lastScrollY + 50) {
+            wrapper.style.opacity = '0';
+            wrapper.style.transform = 'translateY(30px)';
+          } else if (currentY < lastScrollY - 50) {
+            wrapper.style.opacity = '1';
+            wrapper.style.transform = 'translateY(0)';
+          }
+      }
+      lastScrollY = currentY;
+    });
+
+    if(btn) {
+        btn.addEventListener('click', async () => {
+          if (!isPlaying) {
+            music.currentTime = savedTime;
+            music.volume = 0; music.muted = false;
+            try {
+              await music.play();
+              let vol = 0;
+              const fade = setInterval(() => {
+                  if (vol < 1) { vol += 0.1; music.volume = vol; } 
+                  else clearInterval(fade);
+              }, 100);
+            } catch (err) { console.log('Playback error:', err); }
+
+            isPlaying = true;
+            btn.classList.add('playing', 'spinning');
+          } else {
+            savedTime = music.currentTime;
+            music.pause();
+            isPlaying = false;
+            btn.classList.remove('playing', 'spinning');
+          }
+        });
+    }
+
+    // --- ADMIN / IFRAME HOOK ---
+    // Listens for 'gallery:addToCart' message from any iframe (Admin or Gallery)
+    window.addEventListener('message', (event) => {
+        const data = event.data;
+        
+        // Check for addToCart event
+        if (data && data.eventType === 'gallery:addToCart') {
+            const detail = data.detail;
+            const pid = 'admin_p_' + detail.productId; // Unique prefix
+            
+            const existing = cart.find(i => i.id === pid);
+            
+            if (existing) {
+                existing.qty += (detail.quantity || 1);
+            } else {
+                cart.push({
+                    id: pid,
+                    name: detail.productName || 'Admin Item',
+                    price: Number(detail.productPrice) || 0,
+                    qty: (detail.quantity || 1)
+                });
+            }
+            
+            saveAndRender(); 
+            
+            // Visual feedback on Nav Badge
+            const badge = document.getElementById('nav-cart-badge');
+            if(badge) {
+                badge.style.transform = "scale(1.5)";
+                setTimeout(() => badge.style.transform = "scale(1)", 300);
+            }
+        }
+    });
+
+    // --- PWA LOGIC ---
+    let deferredPrompt = null;
+    let installReady = false;
+    let isInstalled = false;
+
+    window.addEventListener("appinstalled", () => {
+      isInstalled = true;
+      localStorage.setItem("pipahInstalled", "true");
+      closePipahPopup();
+    });
+
+    if (window.matchMedia('(display-mode: standalone)').matches || localStorage.getItem("pipahInstalled") === "true") {
+      isInstalled = true;
+    }
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installReady = true;
+    });
+
+    function updateInstallText() {
+      const text = document.getElementById("pipahInstallText");
+      if(!text) return;
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+      if (isIOS) {
+        text.textContent = "Add to Homescreen ⬇️";
+        text.onclick = null;
+      } else if (installReady && deferredPrompt) {
+        text.textContent = "Install PipahCookies now";
+        text.onclick = async () => {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === "accepted") {
+            localStorage.setItem("pipahInstalled", "true");
+          }
+          deferredPrompt = null;
+          closePipahPopup();
+        };
+      } else {
+        text.textContent = "Install PipahCookies now";
+        text.onclick = () => alert("Use Chrome, Edge, or Brave to install PipahCookies.");
+      }
+    }
+
+    function closePipahPopup() {
+      const popup = document.getElementById("pipahInstallPopup");
+      if(popup) {
+          popup.classList.remove("show");
+          setTimeout(() => popup.style.display = "none", 400);
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').catch(err => console.log('SW fail'));
+    }
+  </script>
 </body>
 </html>
